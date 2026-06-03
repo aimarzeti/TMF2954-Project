@@ -76,6 +76,13 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
                 0.10));
 
         achievements.add(new LearningAchievement(
+                "Hydration Helper",
+                "Reach 50% lesson progress",
+                "D",
+                SOFT_PINK,
+                0.50));
+
+        achievements.add(new LearningAchievement(
                 "Mood Hero",
                 "Finish lessons",
                 "☁",
@@ -89,6 +96,14 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
                 MINT,
                 1,
                 0));
+
+        achievements.add(new QuizAchievement(
+                "Sleep Master",
+                "Score 60%+",
+                "S",
+                LAVENDER,
+                1,
+                60));
 
         achievements.add(new QuizAchievement(
                 "Wellness Warrior",
@@ -116,13 +131,13 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
     private void buildUI() {
         setLayout(new BorderLayout());
         setBackground(PAPER);
-        setPreferredSize(new Dimension(356, 610));
+        setPreferredSize(new Dimension(330, 610));
 
         add(createHeader(), BorderLayout.NORTH);
 
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBackground(PAPER);
-        contentPanel.setBorder(new EmptyBorder(8, 8, 8, 8));
+        contentPanel.setBorder(new EmptyBorder(7, 6, 7, 6));
 
         JScrollPane scrollPane = new JScrollPane(contentPanel);
         scrollPane.setBorder(null);
@@ -176,6 +191,8 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         contentPanel.removeAll();
         contentPanel.add(createPlayerStatusPanel());
         contentPanel.add(space());
+        contentPanel.add(createCollectiblesPanel());
+        contentPanel.add(space());
         contentPanel.add(createBadgePanel());
         contentPanel.add(space());
         contentPanel.add(createAchievementPopupPanel());
@@ -194,7 +211,7 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
     }
 
     private JPanel createPlayerStatusPanel() {
-        JPanel panel = sectionPanel("PLAYER STATUS", SOFT_PINK, new BorderLayout(8, 8));
+        JPanel panel = sectionPanel("PLAYER STATUS", SOFT_PINK, new BorderLayout(6, 6));
 
         JPanel avatarBox = new JPanel(new BorderLayout());
         avatarBox.setOpaque(false);
@@ -221,13 +238,15 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         stats.add(level);
         stats.add(Box.createVerticalStrut(4));
         stats.add(exp);
+        stats.add(Box.createVerticalStrut(3));
+        stats.add(imageLabel("progress_star.png", 132, 18));
 
         JPanel top = new JPanel(new BorderLayout(8, 0));
         top.setOpaque(false);
         top.add(avatarBox, BorderLayout.WEST);
         top.add(stats, BorderLayout.CENTER);
 
-        JPanel resources = new JPanel(new GridLayout(2, 2, 5, 5));
+        JPanel resources = new JPanel(new GridLayout(2, 2, 4, 4));
         resources.setOpaque(false);
         resources.add(resourceRow("♥ Hearts", "5 / 5", SOFT_PINK));
         resources.add(resourceRow("★ Stars", String.valueOf(calculateStars()), BUTTER));
@@ -240,19 +259,59 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
     }
 
     private JLabel resourceRow(String label, String value, Color color) {
-        JLabel row = new JLabel(label + "   " + value, SwingConstants.CENTER);
+        JLabel row = new JLabel(label + " " + value, SwingConstants.CENTER);
         row.setOpaque(true);
         row.setBackground(color);
         row.setForeground(INK);
-        row.setFont(new Font("Monospaced", Font.BOLD, 11));
-        row.setBorder(new CompoundBorder(new LineBorder(INK, 1), new EmptyBorder(5, 4, 5, 4)));
+        row.setFont(new Font("Monospaced", Font.BOLD, 10));
+        row.setBorder(new CompoundBorder(new LineBorder(INK, 1), new EmptyBorder(4, 2, 4, 2)));
         return row;
+    }
+
+    private JPanel createCollectiblesPanel() {
+        JPanel panel = sectionPanel("COLLECTIBLES", MINT, new BorderLayout(0, 6));
+        JPanel grid = new JPanel(new GridLayout(0, 4, 4, 4));
+        grid.setOpaque(false);
+
+        grid.add(collectibleIcon("heart_pink.png", "HP"));
+        grid.add(collectibleIcon("heart_purple.png", "CALM"));
+        grid.add(collectibleIcon("heart_blue.png", "FOCUS"));
+        grid.add(collectibleIcon("heart_red.png", "CARE"));
+        grid.add(collectibleIcon("star_yellow.png", "STAR"));
+        grid.add(collectibleIcon("star_pink.png", "MOOD"));
+        grid.add(collectibleIcon("star_blue.png", "MIND"));
+        grid.add(collectibleIcon("star_purple.png", "REST"));
+        grid.add(collectibleIcon("coin_star.png", "COIN"));
+        grid.add(collectibleIcon("coin_plain.png", "GOLD"));
+        grid.add(collectibleIcon("gem_green.png", "GEM"));
+
+        panel.add(grid, BorderLayout.CENTER);
+        return panel;
+    }
+
+    private JPanel collectibleIcon(String asset, String label) {
+        JPanel tile = new JPanel();
+        tile.setLayout(new BoxLayout(tile, BoxLayout.Y_AXIS));
+        tile.setOpaque(false);
+        tile.setPreferredSize(new Dimension(58, 44));
+
+        JLabel icon = imageLabel(asset, 24, 24);
+        icon.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel text = new JLabel(label);
+        text.setAlignmentX(Component.CENTER_ALIGNMENT);
+        text.setFont(new Font("Monospaced", Font.BOLD, 7));
+        text.setForeground(INK);
+
+        tile.add(icon);
+        tile.add(text);
+        return tile;
     }
 
     private JPanel createBadgePanel() {
         JPanel panel = sectionPanel("BADGES", LAVENDER, new BorderLayout(0, 8));
 
-        JPanel grid = new JPanel(new GridLayout(0, 3, 7, 7));
+        JPanel grid = new JPanel(new GridLayout(0, 2, 6, 6));
         grid.setOpaque(false);
         for (Achievement achievement : achievements) {
             grid.add(badgeTile(achievement, achievement.isUnlocked(profile)));
@@ -266,19 +325,19 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         JPanel tile = new JPanel();
         tile.setLayout(new BoxLayout(tile, BoxLayout.Y_AXIS));
         tile.setBackground(unlocked ? new Color(255, 250, 255) : new Color(241, 236, 246));
-        tile.setBorder(new CompoundBorder(new LineBorder(INK, 1), new EmptyBorder(6, 4, 6, 4)));
+        tile.setBorder(new CompoundBorder(new LineBorder(INK, 1), new EmptyBorder(5, 3, 5, 3)));
+        tile.setPreferredSize(new Dimension(130, 82));
 
-        JLabel icon = unlocked
-                ? imageLabel(getBadgeAssetFile(achievement), 54, 54)
-                : new JLabel(new BadgeIcon(LOCKED, "?"));
-        if (unlocked && icon.getIcon() == null) {
-            icon = new JLabel(new BadgeIcon(achievement.getColor(), achievement.getIconText()));
+        JLabel icon = imageLabel(getBadgeAssetFile(achievement), 46, 46);
+        if (icon.getIcon() == null) {
+            icon = new JLabel(new BadgeIcon(unlocked ? achievement.getColor() : LOCKED,
+                    unlocked ? achievement.getIconText() : "?"));
         }
         icon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel name = new JLabel("<html><center>" + achievement.getName() + "</center></html>");
         name.setAlignmentX(Component.CENTER_ALIGNMENT);
-        name.setFont(new Font("SansSerif", Font.BOLD, 10));
+        name.setFont(new Font("SansSerif", Font.BOLD, 9));
         name.setForeground(unlocked ? INK : new Color(128, 118, 138));
 
         tile.add(icon);
@@ -300,11 +359,10 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
             return panel;
         }
 
-        JLabel badge = unlocked
-                ? imageLabel(getBadgeAssetFile(featured), 68, 68)
-                : new JLabel(new BadgeIcon(LOCKED, "?"));
-        if (unlocked && badge.getIcon() == null) {
-            badge = new JLabel(new BadgeIcon(featured.getColor(), featured.getIconText()));
+        JLabel badge = imageLabel(getBadgeAssetFile(featured), 68, 68);
+        if (badge.getIcon() == null) {
+            badge = new JLabel(new BadgeIcon(unlocked ? featured.getColor() : LOCKED,
+                    unlocked ? featured.getIconText() : "?"));
         }
         panel.add(badge, BorderLayout.WEST);
 
@@ -338,6 +396,16 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         overallBar.setString(overall + "%");
         overallBar.setStringPainted(true);
 
+        JPanel progressTop = new JPanel();
+        progressTop.setOpaque(false);
+        progressTop.setLayout(new BoxLayout(progressTop, BoxLayout.Y_AXIS));
+        JLabel leafBar = imageLabel("progress_leaf.png", 150, 20);
+        leafBar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        overallBar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        progressTop.add(leafBar);
+        progressTop.add(Box.createVerticalStrut(3));
+        progressTop.add(overallBar);
+
         JPanel rows = new JPanel();
         rows.setOpaque(false);
         rows.setLayout(new BoxLayout(rows, BoxLayout.Y_AXIS));
@@ -346,7 +414,7 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         rows.add(progressRow("Quiz Battle", profile.getQuizAttempts() > 0));
         rows.add(progressRow("Score 80%+", profile.getBestPercentage() >= 80));
 
-        panel.add(overallBar, BorderLayout.NORTH);
+        panel.add(progressTop, BorderLayout.NORTH);
         panel.add(rows, BorderLayout.CENTER);
         return panel;
     }
@@ -391,6 +459,7 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         center.add(text);
         center.add(Box.createVerticalStrut(4));
         center.add(timerLabel);
+        center.add(imageLabel("progress_heart.png", 150, 20));
         center.add(timerProgress);
         center.add(Box.createVerticalStrut(6));
         center.add(buttons);
@@ -445,11 +514,13 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
     }
 
     private JPanel sectionPanel(String title, Color accent, LayoutManager layout) {
-        JPanel outer = new JPanel(new BorderLayout(0, 6));
+        JPanel outer = new JPanel(new BorderLayout(0, 5));
         outer.setBackground(PANEL);
         outer.setBorder(new CompoundBorder(
                 new LineBorder(new Color(145, 103, 188), 2),
-                new CompoundBorder(new LineBorder(accent, 5), new EmptyBorder(7, 8, 8, 8))));
+                new CompoundBorder(new LineBorder(accent, 4), new EmptyBorder(6, 6, 7, 6))));
+        outer.setAlignmentX(Component.LEFT_ALIGNMENT);
+        outer.setMaximumSize(new Dimension(310, Integer.MAX_VALUE));
 
         JLabel ribbon = new JLabel(" " + title + " ", SwingConstants.CENTER);
         ribbon.setOpaque(true);
@@ -520,11 +591,17 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         if ("Stress Slayer".equals(name)) {
             return "badge_stress_slayer.png";
         }
+        if ("Hydration Helper".equals(name)) {
+            return "badge_hydration_helper.png";
+        }
         if ("Mood Hero".equals(name)) {
             return "badge_mood_hero.png";
         }
         if ("Knowledge Seeker".equals(name)) {
             return "badge_knowledge_seeker.png";
+        }
+        if ("Sleep Master".equals(name)) {
+            return "badge_sleep_master.png";
         }
         if ("Wellness Warrior".equals(name)) {
             return "badge_wellness_warrior.png";

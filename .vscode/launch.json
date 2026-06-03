@@ -3,6 +3,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "GamificationModule",
+      "request": "launch",
+      "mainClass": "GamificationModule",
+      "projectName": "TMF2954-Project_e1213d0f"
+    },
+    {
+      "type": "java",
       "name": "MentalHealthGameApp",
       "request": "launch",
       "mainClass": "MentalHealthGameApp",
