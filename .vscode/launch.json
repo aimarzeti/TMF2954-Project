@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "MentalHealthGameApp",
+      "request": "launch",
+      "mainClass": "MentalHealthGameApp",
+      "projectName": "TMF2954-Project_e1213d0f"
+    },
+    {
+      "type": "java",
+      "name": "QuizModule",
+      "request": "launch",
+      "mainClass": "QuizModule",
+      "projectName": "TMF2954-Project_e1213d0f"
+    },
+    {
+      "type": "java",
+      "name": "Healiverse - G14 G04/SE",
+      "request": "launch",
+      "mainClass": "LoginApplication",
+      "classPaths": [
+        "${workspaceFolder}/out",
+        "${workspaceFolder}"
+      ],
+      "preLaunchTask": "Compile TMF2954 Project"
+    }
+  ]
+}

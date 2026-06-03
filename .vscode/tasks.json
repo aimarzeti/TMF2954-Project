@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Compile TMF2954 Project",
+      "type": "shell",
+      "command": "javac",
+      "args": [
+        "-encoding",
+        "UTF-8",
+        "-d",
+        "out",
+        "source code\\learning module\\LearningModule.java",
+        "source code\\quiz\\QuizModule.java",
+        "source code\\user login\\LoginApplication.java",
+        "source code\\gamification\\Reward.java",
+        "source code\\gamification\\GamificationModule.java",
+        "source code\\gamification\\MentalHealthGameApp.java"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$javac"
+    }
+  ]
+}
