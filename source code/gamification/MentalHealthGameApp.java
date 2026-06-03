@@ -25,6 +25,7 @@ public class MentalHealthGameApp extends JFrame {
     private static final Color BUTTER = new Color(255, 219, 129);
     private static final Color LAVENDER = new Color(205, 187, 239);
     private static final Color BLUE = new Color(156, 211, 245);
+    private static final String PIXEL_DIR = "images/pixel/";
 
     private final String username;
     private final CardLayout cards;
@@ -82,16 +83,7 @@ public class MentalHealthGameApp extends JFrame {
         center.setOpaque(false);
         center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
 
-        JLabel title = new JLabel("HEALIVERSE", SwingConstants.CENTER);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        title.setFont(new Font("Monospaced", Font.BOLD, 33));
-        title.setForeground(new Color(133, 99, 204));
-        title.setBorder(new EmptyBorder(12, 0, 0, 0));
-
-        JLabel subtitle = new JLabel("Your Mental Wellness Journey", SwingConstants.CENTER);
-        subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-        subtitle.setFont(new Font("Monospaced", Font.BOLD, 11));
-        subtitle.setForeground(new Color(100, 82, 166));
+        JComponent logoHeader = createLogoHeader();
 
         JPanel menu = new JPanel();
         menu.setOpaque(false);
@@ -106,15 +98,40 @@ public class MentalHealthGameApp extends JFrame {
         menu.add(Box.createVerticalStrut(6));
         menu.add(menuButton("ACHIEVEMENTS", LAVENDER, this::showRewards));
 
-        center.add(title);
-        center.add(subtitle);
-        center.add(Box.createVerticalStrut(18));
+        center.add(logoHeader);
+        center.add(Box.createVerticalStrut(12));
         center.add(menu);
         center.add(Box.createVerticalStrut(10));
-        center.add(createDailyReminder());
+        center.add(createMascotReminder());
 
         home.add(center, BorderLayout.CENTER);
         return home;
+    }
+
+    private JComponent createLogoHeader() {
+        JLabel logo = imageLabel("healiverse_logo.png", 305, 150);
+        logo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        if (logo.getIcon() != null) {
+            return logo;
+        }
+
+        JPanel fallback = new JPanel();
+        fallback.setOpaque(false);
+        fallback.setLayout(new BoxLayout(fallback, BoxLayout.Y_AXIS));
+
+        JLabel title = new JLabel("HEALIVERSE", SwingConstants.CENTER);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setFont(new Font("Monospaced", Font.BOLD, 33));
+        title.setForeground(new Color(133, 99, 204));
+
+        JLabel subtitle = new JLabel("Your Mental Wellness Journey", SwingConstants.CENTER);
+        subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        subtitle.setFont(new Font("Monospaced", Font.BOLD, 11));
+        subtitle.setForeground(new Color(100, 82, 166));
+
+        fallback.add(title);
+        fallback.add(subtitle);
+        return fallback;
     }
 
     private JPanel createStatusBar() {
@@ -177,6 +194,28 @@ public class MentalHealthGameApp extends JFrame {
         return sign;
     }
 
+    private JPanel createMascotReminder() {
+        JPanel row = new JPanel(new BorderLayout(4, 0));
+        row.setOpaque(false);
+        row.setAlignmentX(Component.CENTER_ALIGNMENT);
+        row.setMaximumSize(new Dimension(330, 118));
+
+        JLabel girl = imageLabel("girl_wave.png", 80, 112);
+        if (girl.getIcon() == null) {
+            girl.setPreferredSize(new Dimension(74, 96));
+        }
+
+        JLabel bunny = imageLabel("bunny.png", 58, 80);
+        if (bunny.getIcon() == null) {
+            bunny.setPreferredSize(new Dimension(54, 80));
+        }
+
+        row.add(girl, BorderLayout.WEST);
+        row.add(createDailyReminder(), BorderLayout.CENTER);
+        row.add(bunny, BorderLayout.EAST);
+        return row;
+    }
+
     private JButton navButton(String icon, String label, Runnable action) {
         JButton button = new JButton("<html><center>" + icon + "<br>" + label + "</center></html>");
         button.setFont(new Font("Monospaced", Font.BOLD, 10));
@@ -186,6 +225,27 @@ public class MentalHealthGameApp extends JFrame {
         button.setBorder(new LineBorder(new Color(177, 145, 214), 1));
         button.addActionListener(e -> action.run());
         return button;
+    }
+
+    private JLabel imageLabel(String fileName, int maxWidth, int maxHeight) {
+        JLabel label = new JLabel(loadPixelIcon(fileName, maxWidth, maxHeight));
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        return label;
+    }
+
+    private ImageIcon loadPixelIcon(String fileName, int maxWidth, int maxHeight) {
+        ImageIcon icon = new ImageIcon(PIXEL_DIR + fileName);
+        if (icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0) {
+            return null;
+        }
+
+        double ratio = Math.min(maxWidth / (double) icon.getIconWidth(),
+                maxHeight / (double) icon.getIconHeight());
+        int width = Math.max(1, (int) Math.round(icon.getIconWidth() * ratio));
+        int height = Math.max(1, (int) Math.round(icon.getIconHeight() * ratio));
+        Image scaled = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaled);
     }
 
     private void showLearning() {
@@ -310,8 +370,6 @@ public class MentalHealthGameApp extends JFrame {
             drawCloud(g, 318, 156);
             drawRainbow(g, 0, 238);
             drawHills(g);
-            drawCharacter(g, 38, getHeight() - 132);
-            drawBunny(g, getWidth() - 72, getHeight() - 105);
 
             g.dispose();
         }

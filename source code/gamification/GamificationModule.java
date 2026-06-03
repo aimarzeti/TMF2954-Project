@@ -35,6 +35,7 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
     private static final Color LAVENDER = new Color(205, 187, 239);
     private static final Color BLUE = new Color(156, 211, 245);
     private static final Color LOCKED = new Color(221, 214, 228);
+    private static final String PIXEL_DIR = "images/pixel/";
 
     private final String username;
     private final List<Achievement> achievements;
@@ -68,21 +69,21 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
 
     private void buildAchievements() {
         achievements.add(new LearningAchievement(
-                "First Step",
+                "Stress Slayer",
                 "Start learning",
                 "♥",
                 SOFT_PINK,
                 0.10));
 
         achievements.add(new LearningAchievement(
-                "Explorer",
+                "Mood Hero",
                 "Finish lessons",
                 "☁",
                 BLUE,
                 true));
 
         achievements.add(new QuizAchievement(
-                "Quiz Sprout",
+                "Knowledge Seeker",
                 "Try one quiz",
                 "✦",
                 MINT,
@@ -90,7 +91,7 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
                 0));
 
         achievements.add(new QuizAchievement(
-                "Quiz Hero",
+                "Wellness Warrior",
                 "Score 80%+",
                 "★",
                 BUTTER,
@@ -98,7 +99,7 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
                 80));
 
         achievements.add(new QuizAchievement(
-                "Resilient",
+                "Self Care Champion",
                 "Try 3 quizzes",
                 "♦",
                 LAVENDER,
@@ -106,7 +107,7 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
                 0));
 
         achievements.add(new ComboAchievement(
-                "Champion",
+                "Consistency King",
                 "Learn + score 80%+",
                 "♛",
                 PINK));
@@ -197,7 +198,8 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
 
         JPanel avatarBox = new JPanel(new BorderLayout());
         avatarBox.setOpaque(false);
-        avatarBox.add(new JLabel(new AvatarIcon(64)), BorderLayout.CENTER);
+        JLabel avatar = imageLabel("girl_idle.png", 66, 92);
+        avatarBox.add(avatar.getIcon() == null ? new JLabel(new AvatarIcon(64)) : avatar, BorderLayout.CENTER);
 
         JPanel stats = new JPanel();
         stats.setOpaque(false);
@@ -266,8 +268,12 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         tile.setBackground(unlocked ? new Color(255, 250, 255) : new Color(241, 236, 246));
         tile.setBorder(new CompoundBorder(new LineBorder(INK, 1), new EmptyBorder(6, 4, 6, 4)));
 
-        JLabel icon = new JLabel(new BadgeIcon(unlocked ? achievement.getColor() : LOCKED,
-                unlocked ? achievement.getIconText() : "?"));
+        JLabel icon = unlocked
+                ? imageLabel(getBadgeAssetFile(achievement), 54, 54)
+                : new JLabel(new BadgeIcon(LOCKED, "?"));
+        if (unlocked && icon.getIcon() == null) {
+            icon = new JLabel(new BadgeIcon(achievement.getColor(), achievement.getIconText()));
+        }
         icon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel name = new JLabel("<html><center>" + achievement.getName() + "</center></html>");
@@ -294,8 +300,12 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
             return panel;
         }
 
-        JLabel badge = new JLabel(new BadgeIcon(unlocked ? featured.getColor() : LOCKED,
-                unlocked ? featured.getIconText() : "?"));
+        JLabel badge = unlocked
+                ? imageLabel(getBadgeAssetFile(featured), 68, 68)
+                : new JLabel(new BadgeIcon(LOCKED, "?"));
+        if (unlocked && badge.getIcon() == null) {
+            badge = new JLabel(new BadgeIcon(featured.getColor(), featured.getIconText()));
+        }
         panel.add(badge, BorderLayout.WEST);
 
         JLabel text = new JLabel("<html><b>" + featured.getName() + "</b><br>"
@@ -479,6 +489,53 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         button.setFocusPainted(false);
         button.setBorder(new CompoundBorder(new LineBorder(INK, 2), new EmptyBorder(4, 8, 4, 8)));
         return button;
+    }
+
+    private JLabel imageLabel(String fileName, int maxWidth, int maxHeight) {
+        JLabel label = new JLabel(loadPixelIcon(fileName, maxWidth, maxHeight));
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        return label;
+    }
+
+    private ImageIcon loadPixelIcon(String fileName, int maxWidth, int maxHeight) {
+        if (fileName == null || fileName.trim().isEmpty()) {
+            return null;
+        }
+        ImageIcon icon = new ImageIcon(PIXEL_DIR + fileName);
+        if (icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0) {
+            return null;
+        }
+
+        double ratio = Math.min(maxWidth / (double) icon.getIconWidth(),
+                maxHeight / (double) icon.getIconHeight());
+        int width = Math.max(1, (int) Math.round(icon.getIconWidth() * ratio));
+        int height = Math.max(1, (int) Math.round(icon.getIconHeight() * ratio));
+        Image scaled = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaled);
+    }
+
+    private String getBadgeAssetFile(Achievement achievement) {
+        String name = achievement.getName();
+        if ("Stress Slayer".equals(name)) {
+            return "badge_stress_slayer.png";
+        }
+        if ("Mood Hero".equals(name)) {
+            return "badge_mood_hero.png";
+        }
+        if ("Knowledge Seeker".equals(name)) {
+            return "badge_knowledge_seeker.png";
+        }
+        if ("Wellness Warrior".equals(name)) {
+            return "badge_wellness_warrior.png";
+        }
+        if ("Self Care Champion".equals(name)) {
+            return "badge_self_care_champion.png";
+        }
+        if ("Consistency King".equals(name)) {
+            return "badge_consistency_king.png";
+        }
+        return null;
     }
 
     private void startCalmTimer(ActionEvent event) {
