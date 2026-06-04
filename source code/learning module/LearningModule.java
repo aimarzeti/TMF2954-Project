@@ -304,7 +304,7 @@ public class LearningModule extends JPanel implements Displayable, Navigable {
             "Step 2: HOLD your breath for 7 seconds\n" +
             "Step 3: EXHALE for 8 seconds\n" +
             "Step 4: Repeat 3-4 times\n\n" +
-            "This technique helps your body relax." +
+            "This technique helps your body relax.",
             "images/mindfulness.png",
             "Mindfulness technique.",
             PAGE_COLOURS[7]
@@ -332,7 +332,7 @@ public class LearningModule extends JPanel implements Displayable, Navigable {
             "• TALIAN KASIH 15999\n" +
             "• University Counselling Services.\n" +
             "Congratulations on completing this learning module!.\n" +
-            "Proceed to the quiz to test your knowledge."
+            "Proceed to the quiz to test your knowledge.",
             "images/resources.png",
             "Support resources.",
             PAGE_COLOURS[9]
