@@ -1,3 +1,5 @@
 meow,123456
 admin,password123
 you,123456
+fairy,f12345
+seonghyeon,123meow

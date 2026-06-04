@@ -1,14 +1,16 @@
 // Class: MentalHealthGameApp
 // Creator: Zeti Nur Aimar binti Ali
 // Tester: G04/SE Group 14
-// Description: Phone-sized desktop launcher that connects learning, quiz,
-// and gamification screens with a pastel pixel wellness experience.
+// Description: Main phone-sized desktop launcher for the HEALIVERSE SDG 3 app.
+// Connects learning, quiz, rewards, leaderboard, and logout navigation using CardLayout.
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MentalHealthGameApp extends JFrame {
 
@@ -20,13 +22,15 @@ public class MentalHealthGameApp extends JFrame {
     private static final Color PAPER = HealiverseTheme.CREAM;
     private static final Color SURFACE = HealiverseTheme.SURFACE;
     private static final Color LINE = HealiverseTheme.LINE;
-    private static final Color PRIMARY = HealiverseTheme.PASTEL_PINK;
-    private static final Color PRIMARY_DARK = new Color(202, 78, 132);
-    private static final Color SAGE = HealiverseTheme.MINT;
-    private static final Color ROSE = HealiverseTheme.PASTEL_PINK;
-    private static final Color GOLD = HealiverseTheme.SOFT_YELLOW;
-    private static final Color BLUE = HealiverseTheme.BABY_BLUE;
+
+    private static final Color PINK = HealiverseTheme.PASTEL_PINK;
+    private static final Color MINT = HealiverseTheme.MINT;
+    private static final Color YELLOW = HealiverseTheme.SOFT_YELLOW;
     private static final Color LAVENDER = HealiverseTheme.LAVENDER;
+
+    private static final Color GREEN_TEXT = new Color(41, 110, 79);
+    private static final Color PINK_DARK = new Color(202, 78, 132);
+    private static final Color PURPLE_TEXT = new Color(89, 68, 158);
 
     private final String username;
     private final CardLayout cards;
@@ -37,9 +41,9 @@ public class MentalHealthGameApp extends JFrame {
         this.username = cleanUsername(username);
         this.cards = new CardLayout();
         this.screens = new JPanel(cards);
-        this.bottomNav = new JPanel(new GridLayout(1, 5, 2, 0));
+        this.bottomNav = new JPanel(new GridLayout(1, 6, 2, 0));
 
-        setTitle("Healiverse - TMF2954 Java Programming Project (G14 - G04/SE)");
+        setTitle("Healiverse - TMF2954 Java Programming Project");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setContentPane(createPhoneShell());
@@ -50,67 +54,58 @@ public class MentalHealthGameApp extends JFrame {
     private JPanel createPhoneShell() {
         JPanel phone = new JPanel(new BorderLayout());
         phone.setPreferredSize(new Dimension(PHONE_WIDTH, PHONE_HEIGHT));
+        phone.setMinimumSize(new Dimension(PHONE_WIDTH, PHONE_HEIGHT));
         phone.setBackground(PAPER);
         phone.setBorder(new CompoundBorder(
-                new LineBorder(new Color(143, 104, 204), 3),
-                new EmptyBorder(7, 7, 7, 7)));
+                new LineBorder(new Color(143, 187, 155), 2),
+                new EmptyBorder(6, 6, 6, 6)));
 
         screens.setBackground(PAPER);
         screens.add(createHomeScreen(), "HOME");
 
-        bottomNav.setBackground(HealiverseTheme.SURFACE);
+        bottomNav.setBackground(SURFACE);
         bottomNav.setBorder(new CompoundBorder(
-                new LineBorder(HealiverseTheme.LINE, 1),
-                new EmptyBorder(5, 8, 5, 8)));
-        bottomNav.setPreferredSize(new Dimension(PHONE_WIDTH - 20, 58));
-        bottomNav.add(navButton("Home", new SimpleIcon("home", PRIMARY_DARK), () -> cards.show(screens, "HOME")));
-        bottomNav.add(navButton("Learn", new SimpleIcon("book", PRIMARY_DARK), this::showLearning));
-        bottomNav.add(navButton("Quiz", new SimpleIcon("quiz", PRIMARY_DARK), this::showQuiz));
-        bottomNav.add(navButton("Rewards", new SimpleIcon("badge", PRIMARY_DARK), this::showRewards));
-        bottomNav.add(navButton("Profile", new SimpleIcon("rank", PRIMARY_DARK), this::showProfile));
+                new LineBorder(LINE, 1),
+                new EmptyBorder(5, 4, 5, 4)));
+        bottomNav.setPreferredSize(new Dimension(PHONE_WIDTH - 16, 58));
+
+        bottomNav.add(navButton("Home", new SimpleIcon("home", PINK_DARK), () -> cards.show(screens, "HOME")));
+        bottomNav.add(navButton("Learn", new SimpleIcon("book", PINK_DARK), this::showLearning));
+        bottomNav.add(navButton("Quiz", new SimpleIcon("quiz", PINK_DARK), this::showQuiz));
+        bottomNav.add(navButton("Rewards", new SimpleIcon("badge", PINK_DARK), this::showRewards));
+        bottomNav.add(navButton("Board", new SimpleIcon("rank", PINK_DARK), this::showLeaderboard));
+        bottomNav.add(navButton("Logout", new SimpleIcon("exit", PINK_DARK), this::logoutUser));
 
         phone.add(screens, BorderLayout.CENTER);
         phone.add(bottomNav, BorderLayout.SOUTH);
+
         return phone;
     }
+
+    // -------------------------------------------------------------------------
+    // Home Screen
+    // -------------------------------------------------------------------------
 
     private JPanel createHomeScreen() {
         HomeBackdrop home = new HomeBackdrop();
         home.setLayout(new BorderLayout());
-        home.setBorder(new EmptyBorder(8, 14, 8, 14));
+        home.setBorder(new EmptyBorder(10, 14, 10, 14));
 
         JPanel center = new JPanel();
         center.setOpaque(false);
         center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
 
         center.add(createHeroPanel());
-        center.add(Box.createVerticalStrut(6));
+        center.add(Box.createVerticalStrut(10));
         center.add(createWelcomeBanner());
-        center.add(Box.createVerticalStrut(8));
+        center.add(Box.createVerticalStrut(12));
         center.add(createMenuPanel());
-        center.add(Box.createVerticalStrut(8));
+        center.add(Box.createVerticalStrut(12));
         center.add(createDailyReminder());
         center.add(Box.createVerticalGlue());
 
         home.add(center, BorderLayout.CENTER);
         return home;
-    }
-    
-    private JPanel createQuickTips() {
-        JPanel tips = new JPanel();
-        tips.setOpaque(false);
-        tips.setLayout(new BorderLayout());
-        tips.setAlignmentX(Component.CENTER_ALIGNMENT);
-        tips.setMaximumSize(new Dimension(350, 35));
-        
-        JLabel tipsLabel = new JLabel("<html><center>Tip: Complete daily challenges for bonus rewards!</center></html>");
-        tipsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        tipsLabel.setFont(new Font("SansSerif", Font.ITALIC, 9));
-        tipsLabel.setForeground(MUTED);
-        tipsLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        
-        tips.add(tipsLabel, BorderLayout.CENTER);
-        return tips;
     }
 
     private JPanel createHeroPanel() {
@@ -118,13 +113,13 @@ public class MentalHealthGameApp extends JFrame {
         hero.setOpaque(false);
         hero.setLayout(new BoxLayout(hero, BoxLayout.Y_AXIS));
         hero.setAlignmentX(Component.CENTER_ALIGNMENT);
-        hero.setMaximumSize(new Dimension(HealiverseTheme.CONTENT_WIDTH, 116));
-        hero.setBorder(new EmptyBorder(2, 6, 0, 6));
+        hero.setMaximumSize(new Dimension(HealiverseTheme.CONTENT_WIDTH, 108));
+        hero.setBorder(new EmptyBorder(2, 4, 0, 4));
 
-        JLabel tag = new JLabel("SDG 3: Good Health and Well-Being");
-        tag.setAlignmentX(Component.CENTER_ALIGNMENT);
-        tag.setFont(new Font("SansSerif", Font.BOLD, 11));
-        tag.setForeground(new Color(32, 132, 100));
+        JLabel sdg = new JLabel("SDG 3: Good Health and Well-Being");
+        sdg.setAlignmentX(Component.CENTER_ALIGNMENT);
+        sdg.setFont(HealiverseTheme.buttonFont(11));
+        sdg.setForeground(GREEN_TEXT);
 
         JLabel logo = new JLabel("HEALIVERSE", SwingConstants.CENTER);
         logo.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -132,178 +127,117 @@ public class MentalHealthGameApp extends JFrame {
         logo.setForeground(INK);
         logo.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JLabel subtitle = new JLabel("<html><center>Mental health education made friendly and empowering</center></html>");
+        JLabel subtitle = new JLabel("<html><center>Mental health learning, quiz, and rewards</center></html>");
         subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-        subtitle.setFont(new Font("SansSerif", Font.BOLD, 11));
+        subtitle.setFont(HealiverseTheme.bodyFont(11));
         subtitle.setForeground(MUTED);
+        subtitle.setHorizontalAlignment(SwingConstants.CENTER);
 
-        hero.add(tag);
-        hero.add(Box.createVerticalStrut(4));
+        hero.add(sdg);
+        hero.add(Box.createVerticalStrut(5));
         hero.add(logo);
         hero.add(Box.createVerticalStrut(5));
         hero.add(subtitle);
+
         return hero;
     }
 
     private JPanel createWelcomeBanner() {
-        JPanel banner = new JPanel(new BorderLayout(10, 0));
-        banner.setAlignmentX(Component.CENTER_ALIGNMENT);
-        banner.setMaximumSize(new Dimension(HealiverseTheme.CONTENT_WIDTH, 68));
-        banner.setBackground(SURFACE);
-        banner.setBorder(HealiverseTheme.thinPixelBorder(HealiverseTheme.LINE, 7));
+        JPanel banner = cleanCard(new BorderLayout(10, 0), 84);
 
         JPanel copy = new JPanel();
         copy.setOpaque(false);
         copy.setLayout(new BoxLayout(copy, BoxLayout.Y_AXIS));
 
-        JLabel title = new JLabel("Welcome, Healer!");
+        JLabel title = new JLabel("Welcome, " + username + "!");
         title.setFont(HealiverseTheme.buttonFont(14));
         title.setForeground(INK);
 
-        JLabel message = new JLabel("<html>You're doing great today.</html>");
+        JLabel message = new JLabel("<html>Choose a module and continue your wellness journey.</html>");
         message.setFont(HealiverseTheme.bodyFont(11));
         message.setForeground(MUTED);
 
-        copy.add(title);
         copy.add(Box.createVerticalStrut(4));
+        copy.add(title);
+        copy.add(Box.createVerticalStrut(5));
         copy.add(message);
 
-        JLabel mascot = new JLabel(new SimpleIcon("leaf", new Color(41, 110, 79)));
+        JLabel mascot = imageLabel("Bunny Wave.png", 58, 58);
+        if (mascot.getIcon() == null) {
+            mascot = new JLabel(new SimpleIcon("leaf", GREEN_TEXT));
+        }
+        mascot.setHorizontalAlignment(SwingConstants.CENTER);
+        mascot.setPreferredSize(new Dimension(62, 62));
 
         banner.add(copy, BorderLayout.CENTER);
         banner.add(mascot, BorderLayout.EAST);
+
         return banner;
     }
 
     private JPanel createMenuPanel() {
-        JPanel menu = new JPanel();
+        JPanel menu = new JPanel(new GridLayout(2, 2, 8, 8));
         menu.setOpaque(false);
-        menu.setLayout(new GridLayout(2, 2, 8, 8));
         menu.setAlignmentX(Component.CENTER_ALIGNMENT);
-        menu.setMaximumSize(new Dimension(HealiverseTheme.CONTENT_WIDTH, 196));
 
-        menu.add(featureButton("Learn", "Grow your mind", "Learn Button.png", SAGE, this::showLearning));
-        menu.add(featureButton("Quiz", "Test and learn", "Quiz Button.png", BLUE, this::showQuiz));
-        menu.add(featureButton("Rewards", "Earn and collect", "Rewards Button.png", ROSE, this::showRewards));
-        menu.add(featureButton("Calm Time", "Relax and breathe", "Calm Time Button.png", LAVENDER, this::showRewards));
+        Dimension size = new Dimension(HealiverseTheme.CONTENT_WIDTH, 292);
+        menu.setPreferredSize(size);
+        menu.setMinimumSize(size);
+        menu.setMaximumSize(size);
+
+        menu.add(dashboardButton("Learn", "10 mental health pages", "Learn Button Dashboard.png", MINT, this::showLearning));
+        menu.add(dashboardButton("Quiz", "20 questions", "Quiz Button Dashboard.png", LAVENDER, this::showQuiz));
+        menu.add(dashboardButton("Rewards", "Badges and points", "Rewards Button Dashboard.png", PINK, this::showRewards));
+        menu.add(dashboardButton("Leaderboard", "Best quiz scores", "Leaderboard Button Dashboard.png", YELLOW, this::showLeaderboard));
+
         return menu;
     }
 
-    private JButton featureButton(String title, String subtitle, String iconName, Color color, Runnable action) {
-        FeatureButton button = new FeatureButton(title, subtitle, color);
-        button.setIcon(featureIcon(title));
+    private JButton dashboardButton(String title, String subtitle, String imageName, Color fallbackColor, Runnable action) {
+        DashboardButton button = new DashboardButton(title, subtitle, imageName, fallbackColor);
+        HealiverseTheme.setFixedSize(button, 166, 142);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        HealiverseTheme.setFixedSize(button, 166, 94);
-        button.setHorizontalTextPosition(SwingConstants.CENTER);
-        button.setVerticalTextPosition(SwingConstants.CENTER);
         button.addActionListener(e -> action.run());
         return button;
     }
 
-    private Icon featureIcon(String title) {
-        if ("Learn".equals(title)) {
-            return new SimpleIcon("book", INK);
-        }
-        if ("Quiz".equals(title)) {
-            return new SimpleIcon("quiz", INK);
-        }
-        if ("Rewards".equals(title)) {
-            return new SimpleIcon("badge", INK);
-        }
-        return new SimpleIcon("leaf", INK);
-    }
-
-    private JPanel createJourneyPanel() {
-        JPanel journey = new JPanel(new BorderLayout(10, 0));
-        journey.setAlignmentX(Component.CENTER_ALIGNMENT);
-        journey.setMaximumSize(new Dimension(350, 70));
-        journey.setBackground(new Color(230, 250, 242));
-        journey.setBorder(new CompoundBorder(
-                new LineBorder(new Color(100, 180, 160), 2),
-                new EmptyBorder(10, 12, 10, 12)));
-
-        JLabel icon = new JLabel(pixelIcon("Growth Tracker Badge.png", 36, 36, new SimpleIcon("leaf", PRIMARY)));
-        icon.setPreferredSize(new Dimension(40, 40));
-
-        JPanel info = new JPanel();
-        info.setOpaque(false);
-        info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS));
-
-        JLabel title = new JLabel("Good Health & Well-Being Progress");
-        title.setFont(new Font("SansSerif", Font.BOLD, 11));
-        title.setForeground(INK);
-        title.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        JProgressBar progress = new JProgressBar(0, 100);
-        progress.setValue(60);
-        progress.setString("60% complete");
-        progress.setStringPainted(true);
-        progress.setFont(new Font("SansSerif", Font.BOLD, 8));
-        progress.setForeground(SAGE);
-        progress.setBackground(new Color(245, 240, 255));
-        progress.setBorder(new LineBorder(new Color(150, 120, 200), 1));
-        progress.setMaximumSize(new Dimension(Integer.MAX_VALUE, 16));
-
-        info.add(title);
-        info.add(Box.createVerticalStrut(5));
-        info.add(progress);
-
-        journey.add(icon, BorderLayout.WEST);
-        journey.add(info, BorderLayout.CENTER);
-        return journey;
-    }
-
     private JPanel createDailyReminder() {
-        JPanel reminder = new JPanel(new BorderLayout(10, 0));
-        reminder.setAlignmentX(Component.CENTER_ALIGNMENT);
-        reminder.setMaximumSize(new Dimension(HealiverseTheme.CONTENT_WIDTH, 72));
+        JPanel reminder = cleanCard(new BorderLayout(10, 0), 86);
         reminder.setBackground(new Color(255, 245, 230));
-        reminder.setBorder(new CompoundBorder(
-                new LineBorder(new Color(255, 170, 120), 2),
-                new EmptyBorder(8, 12, 8, 12)));
 
-        JLabel icon = new JLabel(new SimpleIcon("leaf", PRIMARY_DARK));
-        icon.setPreferredSize(new Dimension(50, 42));
+        JLabel icon = imageLabel("Rabbit.png", 58, 58);
+        if (icon.getIcon() == null) {
+            icon = new JLabel(new SimpleIcon("heart", PINK_DARK));
+        }
+        icon.setHorizontalAlignment(SwingConstants.CENTER);
+        icon.setPreferredSize(new Dimension(62, 62));
 
         JPanel textPanel = new JPanel();
         textPanel.setOpaque(false);
         textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
 
         JLabel title = new JLabel("Daily Reminder");
-        title.setFont(new Font("SansSerif", Font.BOLD, 12));
-        title.setForeground(PRIMARY_DARK);
+        title.setFont(HealiverseTheme.buttonFont(12));
+        title.setForeground(PINK_DARK);
 
-        JLabel text = new JLabel("<html>Take a deep breath. You matter, and every small step counts.</html>");
-        text.setFont(new Font("SansSerif", Font.PLAIN, 11));
-        text.setForeground(new Color(89, 79, 120));
+        JLabel text = new JLabel("<html>Take a deep breath. Every small step counts.</html>");
+        text.setFont(HealiverseTheme.bodyFont(11));
+        text.setForeground(MUTED);
 
+        textPanel.add(Box.createVerticalStrut(4));
         textPanel.add(title);
         textPanel.add(Box.createVerticalStrut(4));
         textPanel.add(text);
 
         reminder.add(icon, BorderLayout.WEST);
         reminder.add(textPanel, BorderLayout.CENTER);
+
         return reminder;
     }
 
-    private static JLabel imageLabel(String fileName, int maxWidth, int maxHeight) {
-        JLabel label = new JLabel(loadPixelIcon(fileName, maxWidth, maxHeight));
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setVerticalAlignment(SwingConstants.CENTER);
-        return label;
-    }
-
-    private static Icon pixelIcon(String fileName, int maxWidth, int maxHeight, Icon fallback) {
-        ImageIcon icon = loadPixelIcon(fileName, maxWidth, maxHeight);
-        return icon == null ? fallback : icon;
-    }
-
-    private static ImageIcon loadPixelIcon(String fileName, int maxWidth, int maxHeight) {
-        if (fileName == null || fileName.trim().isEmpty()) {
-            return null;
-        }
-        return HealiversePaths.loadPixelIcon(fileName, maxWidth, maxHeight);
-    }
+    // -------------------------------------------------------------------------
+    // Navigation
+    // -------------------------------------------------------------------------
 
     private JButton navButton(String label, Icon icon, Runnable action) {
         JButton button = new FooterButton(label, icon);
@@ -322,92 +256,26 @@ public class MentalHealthGameApp extends JFrame {
     }
 
     private void showRewards() {
-        replaceScreen("REWARDS", wrapModule("Achievements", new GamificationModule(username)));
+        replaceScreen("REWARDS", wrapModule("Rewards", new GamificationModule(username)));
     }
 
-    private void showProfile() {
-        replaceScreen("PROFILE", createProfileScreen());
+    private void showLeaderboard() {
+        replaceScreen("LEADERBOARD", wrapModule("Leaderboard", createLeaderboardScreen()));
     }
 
-    private JPanel createProfileScreen() {
-        JPanel profile = new JPanel(new BorderLayout());
-        profile.setBackground(PAPER);
-        profile.setBorder(new EmptyBorder(16, 18, 16, 18));
+    private void logoutUser() {
+        int choice = JOptionPane.showConfirmDialog(
+                this,
+                "Log out and return to login screen?",
+                "Logout",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
 
-        JPanel content = new JPanel();
-        content.setOpaque(false);
-        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
-
-        JLabel logo = imageLabel("Healiverse Logo.png", 320, 136);
-        logo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        if (logo.getIcon() == null) {
-            logo.setText("Healiverse");
-            logo.setFont(HealiverseTheme.titleFont(28));
-            logo.setForeground(INK);
-        }
-
-        JLabel name = new JLabel("Profile: " + username, SwingConstants.CENTER);
-        name.setAlignmentX(Component.CENTER_ALIGNMENT);
-        name.setFont(HealiverseTheme.titleFont(20));
-        name.setForeground(INK);
-
-        JLabel sdg = new JLabel("<html><center>SDG 3: Good Health and Well-Being<br>Mental wellness learning app</center></html>");
-        sdg.setAlignmentX(Component.CENTER_ALIGNMENT);
-        sdg.setFont(HealiverseTheme.buttonFont(13));
-        sdg.setForeground(MUTED);
-
-        JPanel card = new JPanel();
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBackground(SURFACE);
-        card.setBorder(new CompoundBorder(new LineBorder(LINE, 2), new EmptyBorder(18, 18, 18, 18)));
-        card.setAlignmentX(Component.CENTER_ALIGNMENT);
-        card.setMaximumSize(new Dimension(330, 210));
-
-        JLabel note = new JLabel("<html><center>Your learning progress, quiz scores, and rewards are saved for this account.</center></html>");
-        note.setFont(HealiverseTheme.bodyFont(13));
-        note.setForeground(INK);
-        note.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JButton home = actionButton("Back to Home", HealiverseTheme.BABY_BLUE);
-        home.addActionListener(e -> cards.show(screens, "HOME"));
-        JButton logout = actionButton("Log Out", HealiverseTheme.PASTEL_PINK);
-        logout.addActionListener(e -> {
+        if (choice == JOptionPane.YES_OPTION) {
             dispose();
             new LoginApplication().setVisible(true);
-        });
-        JButton exit = actionButton("Exit App", HealiverseTheme.SOFT_YELLOW);
-        exit.addActionListener(e -> System.exit(0));
-
-        card.add(note);
-        card.add(Box.createVerticalStrut(16));
-        card.add(home);
-        card.add(Box.createVerticalStrut(8));
-        card.add(logout);
-        card.add(Box.createVerticalStrut(8));
-        card.add(exit);
-
-        content.add(Box.createVerticalStrut(20));
-        content.add(logo);
-        content.add(Box.createVerticalStrut(10));
-        content.add(name);
-        content.add(Box.createVerticalStrut(8));
-        content.add(sdg);
-        content.add(Box.createVerticalStrut(20));
-        content.add(card);
-        content.add(Box.createVerticalGlue());
-
-        profile.add(content, BorderLayout.CENTER);
-        return profile;
-    }
-
-    private JButton actionButton(String text, Color color) {
-        JButton button = new JButton(text);
-        HealiverseTheme.stylePixelButton(button, color);
-        button.setFont(HealiverseTheme.buttonFont(12));
-        button.setForeground(INK);
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        HealiverseTheme.setFixedSize(button, 252, HealiverseTheme.COMPACT_BUTTON_HEIGHT);
-        return button;
+        }
     }
 
     private LearningModule createLinkedLearningModule() {
@@ -430,34 +298,149 @@ public class MentalHealthGameApp extends JFrame {
         return quiz;
     }
 
+    private JPanel createLeaderboardScreen() {
+        JPanel screen = new JPanel(new BorderLayout());
+        screen.setBackground(PAPER);
+        screen.setBorder(new EmptyBorder(12, 14, 12, 14));
+
+        JPanel content = new JPanel();
+        content.setOpaque(false);
+        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+
+        JLabel image = imageLabel("Leaderboard Button Dashboard.png", 320, 132);
+        image.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JPanel card = cleanCard(new BorderLayout(0, 10), 300);
+
+        JPanel titleRow = new JPanel(new BorderLayout());
+        titleRow.setOpaque(false);
+
+        JLabel title = new JLabel("Top Quiz Scores");
+        title.setFont(HealiverseTheme.buttonFont(14));
+        title.setForeground(INK);
+
+        JLabel note = new JLabel("Best Scores");
+        note.setFont(HealiverseTheme.bodyFont(10));
+        note.setForeground(MUTED);
+
+        titleRow.add(title, BorderLayout.WEST);
+        titleRow.add(note, BorderLayout.EAST);
+
+        JPanel rows = new JPanel();
+        rows.setOpaque(false);
+        rows.setLayout(new GridLayout(5, 1, 0, 6));
+
+        List<ScoreEntry> scores = new ArrayList<>();
+
+        try {
+            scores = new GamificationModule(username).loadLeaderboard(5);
+        } catch (GamificationDataException e) {
+            // Empty leaderboard will be shown if scores cannot be loaded.
+        }
+
+        if (scores.isEmpty()) {
+            rows.add(emptyRankRow("No quiz scores yet."));
+            rows.add(emptyRankRow("Finish the quiz to appear here."));
+            rows.add(emptyRankRow("—"));
+            rows.add(emptyRankRow("—"));
+            rows.add(emptyRankRow("—"));
+        } else {
+            for (int i = 0; i < 5; i++) {
+                if (i < scores.size()) {
+                    rows.add(rankRow(i + 1, scores.get(i)));
+                } else {
+                    rows.add(emptyRankRow((i + 1) + "   —"));
+                }
+            }
+        }
+
+        card.add(titleRow, BorderLayout.NORTH);
+        card.add(rows, BorderLayout.CENTER);
+
+        JLabel bottom = new JLabel("Your quiz score is saved from the Quiz Module.", SwingConstants.CENTER);
+        bottom.setFont(HealiverseTheme.bodyFont(10));
+        bottom.setForeground(MUTED);
+        bottom.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        content.add(image);
+        content.add(Box.createVerticalStrut(12));
+        content.add(card);
+        content.add(Box.createVerticalStrut(10));
+        content.add(bottom);
+        content.add(Box.createVerticalGlue());
+
+        screen.add(content, BorderLayout.CENTER);
+        return screen;
+    }
+
+    private JPanel rankRow(int rank, ScoreEntry entry) {
+        JPanel row = new JPanel(new BorderLayout(8, 0));
+        boolean currentUser = entry.getUsername().equalsIgnoreCase(username);
+
+        row.setBackground(currentUser ? new Color(207, 243, 213) : new Color(255, 252, 247));
+        row.setBorder(new CompoundBorder(
+                new LineBorder(currentUser ? new Color(110, 178, 132) : LINE, 1),
+                new EmptyBorder(8, 10, 8, 10)));
+
+        JLabel left = new JLabel(rank + "   " + entry.getUsername());
+        left.setFont(HealiverseTheme.buttonFont(11));
+        left.setForeground(INK);
+
+        JLabel right = new JLabel(entry.getPercentage() + "%");
+        right.setFont(HealiverseTheme.buttonFont(11));
+        right.setForeground(INK);
+
+        row.add(left, BorderLayout.WEST);
+        row.add(right, BorderLayout.EAST);
+
+        return row;
+    }
+
+    private JLabel emptyRankRow(String text) {
+        JLabel label = new JLabel(text, SwingConstants.CENTER);
+        label.setOpaque(true);
+        label.setBackground(new Color(255, 252, 247));
+        label.setBorder(new LineBorder(LINE, 1));
+        label.setFont(HealiverseTheme.bodyFont(10));
+        label.setForeground(MUTED);
+        return label;
+    }
+
     private JPanel wrapModule(String title, JComponent content) {
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.setBackground(PAPER);
 
-        JPanel top = new JPanel(new BorderLayout());
+        JPanel top = new JPanel(new BorderLayout(8, 0));
         top.setBackground(new Color(239, 225, 252));
         top.setBorder(new CompoundBorder(
                 new LineBorder(LINE, 1),
                 new EmptyBorder(5, 8, 5, 8)));
 
         JButton back = new JButton("<");
-        back.setFont(new Font("SansSerif", Font.BOLD, 16));
+        back.setFont(HealiverseTheme.buttonFont(13));
         back.setForeground(INK);
         back.setBackground(SURFACE);
         back.setFocusPainted(false);
-        back.setBorder(new CompoundBorder(new LineBorder(LINE, 1), new EmptyBorder(2, 8, 2, 8)));
+        back.setBorder(new CompoundBorder(
+                new LineBorder(LINE, 1),
+                new EmptyBorder(2, 8, 2, 8)));
         HealiverseTheme.setFixedSize(back, 34, 28);
         back.addActionListener(e -> cards.show(screens, "HOME"));
 
         JLabel label = new JLabel(title, SwingConstants.CENTER);
-        label.setFont(new Font("SansSerif", Font.BOLD, 13));
-        label.setForeground(PRIMARY_DARK);
+        label.setFont(HealiverseTheme.buttonFont(13));
+        label.setForeground(PINK_DARK);
+
+        JLabel spacer = new JLabel(" ");
+        HealiverseTheme.setFixedSize(spacer, 34, 28);
 
         top.add(back, BorderLayout.WEST);
         top.add(label, BorderLayout.CENTER);
+        top.add(spacer, BorderLayout.EAST);
 
         wrapper.add(top, BorderLayout.NORTH);
         wrapper.add(content, BorderLayout.CENTER);
+
         return wrapper;
     }
 
@@ -468,11 +451,46 @@ public class MentalHealthGameApp extends JFrame {
                 break;
             }
         }
+
         screen.setName(name);
         screens.add(screen, name);
         cards.show(screens, name);
         screens.revalidate();
         screens.repaint();
+    }
+
+    // -------------------------------------------------------------------------
+    // UI Helpers
+    // -------------------------------------------------------------------------
+
+    private JPanel cleanCard(LayoutManager layout, int height) {
+        JPanel card = new JPanel(layout);
+        card.setBackground(SURFACE);
+        card.setBorder(new CompoundBorder(
+                new LineBorder(new Color(216, 194, 190), 1),
+                new EmptyBorder(10, 12, 10, 12)));
+        card.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        Dimension size = new Dimension(HealiverseTheme.CONTENT_WIDTH, height);
+        card.setPreferredSize(size);
+        card.setMinimumSize(size);
+        card.setMaximumSize(size);
+
+        return card;
+    }
+
+    private static JLabel imageLabel(String fileName, int maxWidth, int maxHeight) {
+        JLabel label = new JLabel(loadPixelIcon(fileName, maxWidth, maxHeight));
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        return label;
+    }
+
+    private static ImageIcon loadPixelIcon(String fileName, int maxWidth, int maxHeight) {
+        if (fileName == null || fileName.trim().isEmpty()) {
+            return null;
+        }
+        return HealiversePaths.loadPixelIcon(fileName, maxWidth, maxHeight);
     }
 
     private static String cleanUsername(String value) {
@@ -481,6 +499,10 @@ public class MentalHealthGameApp extends JFrame {
         }
         return value.trim();
     }
+
+    // -------------------------------------------------------------------------
+    // Main
+    // -------------------------------------------------------------------------
 
     public static void main(String[] args) {
         try {
@@ -498,48 +520,58 @@ public class MentalHealthGameApp extends JFrame {
         });
     }
 
-    private static class FeatureButton extends JButton {
-        private final Color color;
+    // -------------------------------------------------------------------------
+    // Custom Components
+    // -------------------------------------------------------------------------
+
+    private static class DashboardButton extends JButton {
         private final String title;
         private final String subtitle;
+        private final String imageName;
+        private final Color fallbackColor;
 
-        FeatureButton(String title, String subtitle, Color color) {
+        DashboardButton(String title, String subtitle, String imageName, Color fallbackColor) {
             super("");
-            this.color = color;
             this.title = title;
             this.subtitle = subtitle;
-            setFont(new Font("SansSerif", Font.BOLD, 12));
-            setForeground(INK);
+            this.imageName = imageName;
+            this.fallbackColor = fallbackColor;
+
             setFocusPainted(false);
             setContentAreaFilled(false);
             setBorder(new EmptyBorder(0, 0, 0, 0));
-            setIconTextGap(0);
-            setMargin(new Insets(0, 0, 0, 0));
             setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            setMargin(new Insets(0, 0, 0, 0));
         }
 
         @Override
         protected void paintComponent(Graphics graphics) {
             Graphics2D g = (Graphics2D) graphics.create();
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            int offset = getModel().isArmed() ? 1 : 0;
-            g.setColor(color);
-            g.fillRoundRect(0, offset, getWidth() - 1, getHeight() - 2, 6, 6);
-            g.setColor(INK);
-            g.drawRoundRect(0, offset, getWidth() - 2, getHeight() - 3, 6, 6);
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
-            Icon icon = getIcon();
+            int offset = getModel().isArmed() ? 1 : 0;
+            ImageIcon icon = loadPixelIcon(imageName, getWidth() - 4, getHeight() - 4);
+
             if (icon != null) {
-                int iconX = (getWidth() - icon.getIconWidth()) / 2;
-                icon.paintIcon(this, g, iconX, 10 + offset);
+                int x = (getWidth() - icon.getIconWidth()) / 2;
+                int y = (getHeight() - icon.getIconHeight()) / 2 + offset;
+                icon.paintIcon(this, g, x, y);
+            } else {
+                g.setColor(fallbackColor);
+                g.fillRoundRect(0, offset, getWidth() - 1, getHeight() - 2, 10, 10);
+                g.setColor(PURPLE_TEXT);
+                g.drawRoundRect(0, offset, getWidth() - 2, getHeight() - 3, 10, 10);
+
+                g.setColor(INK);
+                g.setFont(HealiverseTheme.buttonFont(16));
+                drawCentered(g, title, 62 + offset);
+
+                g.setColor(MUTED);
+                g.setFont(HealiverseTheme.bodyFont(10));
+                drawCentered(g, subtitle, 82 + offset);
             }
 
-            g.setColor(INK);
-            g.setFont(new Font("SansSerif", Font.BOLD, 16));
-            drawCentered(g, title, 62 + offset);
-            g.setColor(new Color(89, 79, 120));
-            g.setFont(new Font("SansSerif", Font.PLAIN, 10));
-            drawCentered(g, subtitle, 80 + offset);
             g.dispose();
         }
 
@@ -553,12 +585,12 @@ public class MentalHealthGameApp extends JFrame {
     private static class FooterButton extends JButton {
         FooterButton(String label, Icon icon) {
             super(label, icon);
-            setFont(new Font("SansSerif", Font.BOLD, 9));
-            setForeground(new Color(89, 68, 158));
+            setFont(HealiverseTheme.buttonFont(7));
+            setForeground(PURPLE_TEXT);
             setFocusPainted(false);
             setContentAreaFilled(false);
-            setBorder(new EmptyBorder(4, 1, 2, 1));
-            setIconTextGap(3);
+            setBorder(new EmptyBorder(4, 0, 2, 0));
+            setIconTextGap(2);
             setMargin(new Insets(0, 0, 0, 0));
             setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         }
@@ -567,10 +599,12 @@ public class MentalHealthGameApp extends JFrame {
         protected void paintComponent(Graphics graphics) {
             Graphics2D g = (Graphics2D) graphics.create();
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
             if (getModel().isRollover()) {
-                g.setColor(new Color(255, 252, 247, 190));
+                g.setColor(new Color(255, 252, 247, 210));
                 g.fillRoundRect(3, 2, getWidth() - 6, getHeight() - 4, 10, 10);
             }
+
             g.dispose();
             super.paintComponent(graphics);
         }
@@ -580,11 +614,20 @@ public class MentalHealthGameApp extends JFrame {
         @Override
         protected void paintComponent(Graphics graphics) {
             super.paintComponent(graphics);
+
             Graphics2D g = (Graphics2D) graphics.create();
-            GradientPaint gradient = new GradientPaint(0, 0, new Color(248, 252, 249),
-                    0, getHeight(), new Color(232, 244, 238));
+
+            GradientPaint gradient = new GradientPaint(
+                    0,
+                    0,
+                    new Color(248, 252, 249),
+                    0,
+                    getHeight(),
+                    new Color(232, 244, 238));
+
             g.setPaint(gradient);
             g.fillRect(0, 0, getWidth(), getHeight());
+
             g.dispose();
         }
     }
@@ -614,6 +657,7 @@ public class MentalHealthGameApp extends JFrame {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g.setStroke(new BasicStroke(2f));
             g.setColor(color);
+
             if ("home".equals(type)) {
                 Polygon roof = new Polygon();
                 roof.addPoint(x + 2, y + 9);
@@ -635,13 +679,16 @@ public class MentalHealthGameApp extends JFrame {
                 g.drawLine(x + 4, y + 14, x + 4, y + 9);
                 g.drawLine(x + 9, y + 14, x + 9, y + 5);
                 g.drawLine(x + 14, y + 14, x + 14, y + 2);
-            } else if ("leaf".equals(type)) {
-                g.drawOval(x + 3, y + 3, 12, 9);
-                g.drawLine(x + 6, y + 13, x + 14, y + 5);
+            } else if ("exit".equals(type)) {
+                g.drawRect(x + 3, y + 4, 9, 10);
+                g.drawLine(x + 9, y + 9, x + 16, y + 9);
+                g.drawLine(x + 13, y + 6, x + 16, y + 9);
+                g.drawLine(x + 13, y + 12, x + 16, y + 9);
             } else {
                 g.drawLine(x + 5, y + 5, x + 13, y + 13);
                 g.drawLine(x + 13, y + 5, x + 5, y + 13);
             }
+
             g.dispose();
         }
     }
