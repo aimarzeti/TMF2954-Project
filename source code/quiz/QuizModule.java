@@ -34,10 +34,10 @@ public class QuizModule extends JPanel implements Quizable {
     //Constants
 
     private static final String SCORES_FILE = "scores.txt";
-    private static final Color TEAL         = new Color(76, 175, 140);
-    private static final Color LIGHT_GREY   = new Color(245, 245, 245);
-    private static final Color DARK_TEXT    = new Color(40, 40, 40);
-    private static final Color RED          = new Color(220, 53, 69);
+    private static final Color TEAL         = new Color(123, 198, 126);
+    private static final Color LIGHT_GREY   = new Color(200, 230, 255);
+    private static final Color DARK_TEXT    = new Color(80, 50, 100);
+    private static final Color RED          = new Color(232, 99, 122);
     private static final Color WHITE        = Color.WHITE;
 
     //Inner class: Question==============================================================
@@ -223,7 +223,7 @@ public class QuizModule extends JPanel implements Quizable {
     private void buildUI() {
         setLayout(new BorderLayout());
         setBackground(WHITE);
-        setPreferredSize(new Dimension(400, 700));
+        setPreferredSize(new Dimension(390, 750));
 
         cardLayout = new CardLayout();
         mainPanel  = new JPanel(cardLayout);
@@ -369,7 +369,7 @@ public class QuizModule extends JPanel implements Quizable {
         // Header
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(TEAL);
-        header.setPreferredSize(new Dimension(400, 60));
+        header.setPreferredSize(new Dimension(390, 60));
         JLabel title = new JLabel("  Quiz Complete!", SwingConstants.LEFT);
         title.setFont(new Font("SansSerif", Font.BOLD, 18));
         title.setForeground(WHITE);
