@@ -19,12 +19,12 @@ import java.util.List;
  * Description:
  * Rewards and gamification module for the HEALIVERSE SDG 3 mental health app.
  * This module reads learning progress and quiz scores from text files, then displays
- * points, stars, badges, level progress, and leaderboard ranking.
+ * points, stars, quiz badges, learning badge, and leaderboard preview.
  *
  * OOP concepts used:
  * - Interface implementation: Reward, LeaderboardProvider
  * - Abstraction: abstract Achievement class
- * - Inheritance: LearningAchievement, QuizAchievement, ComboAchievement
+ * - Inheritance: LearningAchievement, QuizAchievement
  * - Polymorphism/Overriding: isUnlocked() method
  * - Overloading: calculatePoints() methods
  * - Custom exception: GamificationDataException
@@ -52,7 +52,6 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
     private final String username;
     private final List<Achievement> achievements;
     private final JPanel contentPanel;
-    private final JLabel statusLabel;
 
     private GameProfile profile;
     private List<ScoreEntry> leaderboard;
@@ -61,7 +60,6 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         this.username = cleanUsername(username);
         this.achievements = new ArrayList<>();
         this.contentPanel = new JPanel();
-        this.statusLabel = new JLabel(" ");
 
         buildAchievements();
         buildUI();
@@ -73,48 +71,47 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
     }
 
     private void buildAchievements() {
-        achievements.add(new LearningAchievement(
-                "First Steps",
-                "Start the SDG 3 mental health lesson",
-                "L",
+        achievements.add(new QuizAchievement(
+                "Quiz Starter",
+                "Answer 1 quiz question correctly",
+                "Quiz Starter Badge.png",
                 PINK,
-                0.10));
+                1));
+
+        achievements.add(new QuizAchievement(
+                "Brain Booster",
+                "Answer 5 quiz questions correctly",
+                "Brain Booster Badge.png",
+                BLUE,
+                5));
+
+        achievements.add(new QuizAchievement(
+                "Smart Sprout",
+                "Answer 10 quiz questions correctly",
+                "Smart Sprout Badge.png",
+                MINT,
+                10));
+
+        achievements.add(new QuizAchievement(
+                "Wellness Pro",
+                "Answer 15 quiz questions correctly",
+                "Wellness Pro Badge.png",
+                BUTTER,
+                15));
+
+        achievements.add(new QuizAchievement(
+                "Perfect Mind",
+                "Answer all 20 quiz questions correctly",
+                "Perfect Mind Badge.png",
+                PINK,
+                20));
 
         achievements.add(new LearningAchievement(
-                "Growth",
-                "Reach 50% lesson progress",
-                "G",
+                "Learning Growth",
+                "Reach at least 50% learning progress",
+                "Learning Growth Badge.png",
                 MINT,
                 0.50));
-
-        achievements.add(new LearningAchievement(
-                "Helper",
-                "Complete all learning pages",
-                "H",
-                PINK,
-                true));
-
-        achievements.add(new QuizAchievement(
-                "Quiz Star",
-                "Try one mental health quiz",
-                "Q",
-                BUTTER,
-                1,
-                0));
-
-        achievements.add(new QuizAchievement(
-                "Top Score",
-                "Score 80% or higher",
-                "T",
-                BUTTER,
-                1,
-                80));
-
-        achievements.add(new ComboAchievement(
-                "Wellness Warrior",
-                "Complete learning and score 80% or higher",
-                "W",
-                BLUE));
     }
 
     private void buildUI() {
@@ -123,11 +120,9 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setMinimumSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 
-        add(createHeader(), BorderLayout.NORTH);
-
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBackground(PAPER);
-        contentPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
+        contentPanel.setBorder(new EmptyBorder(10, 0, 12, 0));
 
         JScrollPane scrollPane = new JScrollPane(contentPanel);
         scrollPane.setBorder(null);
@@ -136,39 +131,6 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         scrollPane.getVerticalScrollBar().setUnitIncrement(14);
 
         add(scrollPane, BorderLayout.CENTER);
-
-     // redundancy hehe
-     // statusLabel.setFont(HealiverseTheme.bodyFont(10));
-     // statusLabel.setForeground(MUTED);
-    // statusLabel.setBorder(new EmptyBorder(4, 12, 6, 12));
-     // add(statusLabel, BorderLayout.SOUTH);
-    }
-
-    private JPanel createHeader() {
-        JPanel header = new JPanel(new BorderLayout(8, 0));
-        header.setBackground(HealiverseTheme.HEADER_GREEN);
-        header.setBorder(new CompoundBorder(
-                new LineBorder(LINE, 1),
-                new EmptyBorder(8, 12, 8, 12)));
-
-        JButton back = pixelButton("<");
-        HealiverseTheme.setFixedSize(back, 34, 28);
-        back.setEnabled(false);
-
-        JLabel title = new JLabel("REWARDS", SwingConstants.CENTER);
-        title.setFont(HealiverseTheme.titleFont(14));
-        title.setForeground(INK);
-
-        JButton refresh = pixelButton("♥");
-        HealiverseTheme.setFixedSize(refresh, 34, 28);
-        refresh.setToolTipText("Refresh rewards");
-        refresh.addActionListener(e -> refreshData());
-
-        header.add(back, BorderLayout.WEST);
-        header.add(title, BorderLayout.CENTER);
-        header.add(refresh, BorderLayout.EAST);
-
-        return header;
     }
 
     private void refreshData() {
@@ -186,11 +148,13 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         renderDashboard();
 
         if (!warnings.isEmpty()) {
-    JOptionPane.showMessageDialog(this,
-            warnings.get(0),
-            "Data Notice",
-            JOptionPane.WARNING_MESSAGE);
-}
+            JOptionPane.showMessageDialog(
+                    this,
+                    warnings.get(0),
+                    "Data Notice",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        }
     }
 
     private void renderDashboard() {
@@ -259,16 +223,16 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         info.add(Box.createVerticalStrut(4));
         info.add(note);
 
-        JLabel trophy = imageLabel("Trophy Badge.png", 58, 58);
-        if (trophy.getIcon() == null) {
-            trophy = new JLabel(new BadgeIcon(BUTTER, "★"));
+        JLabel star = imageLabel("Yellow Star.png", 58, 58);
+        if (star.getIcon() == null) {
+            star = new JLabel(new BadgeIcon(BUTTER, "★"));
         }
-        trophy.setHorizontalAlignment(SwingConstants.CENTER);
-        trophy.setPreferredSize(new Dimension(62, 62));
+        star.setHorizontalAlignment(SwingConstants.CENTER);
+        star.setPreferredSize(new Dimension(62, 62));
 
         card.add(avatar, BorderLayout.WEST);
         card.add(info, BorderLayout.CENTER);
-        card.add(trophy, BorderLayout.EAST);
+        card.add(star, BorderLayout.EAST);
 
         return card;
     }
@@ -282,8 +246,8 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         fixedHeight(card, 96);
 
         card.add(statBox("Heart Badge.png", "Points", String.valueOf(calculatePoints())));
-        card.add(statBox("Star Badge.png", "Stars", String.valueOf(calculateStars())));
-        card.add(statBox("Leaf Badge.png", "Badges", String.valueOf(getUnlockedBadges().size())));
+        card.add(statBox("Star.png", "Stars", String.valueOf(calculateStars())));
+        card.add(statBox("Quiz Starter Badge.png", "Badges", String.valueOf(getUnlockedBadges().size())));
 
         return card;
     }
@@ -294,7 +258,7 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
         box.setBorder(new EmptyBorder(0, 4, 0, 4));
 
-        JLabel icon = imageLabel(imageName, 28, 28);
+        JLabel icon = imageLabel(imageName, 34, 34);
         icon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel text = new JLabel(label);
@@ -322,11 +286,11 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
 
     private JPanel createBadgePanel() {
         JPanel card = cleanCard(new BorderLayout(0, 8));
-        fixedHeight(card, 210);
+        fixedHeight(card, 276);
 
         JPanel titleRow = sectionTitleRow("Badges", getUnlockedBadges().size() + " / " + achievements.size());
 
-        JPanel badgeGrid = new JPanel(new GridLayout(2, 3, 8, 8));
+        JPanel badgeGrid = new JPanel(new GridLayout(2, 3, 8, 14));
         badgeGrid.setOpaque(false);
 
         for (Achievement achievement : achievements) {
@@ -344,25 +308,38 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         tile.setOpaque(false);
         tile.setBorder(new EmptyBorder(1, 1, 1, 1));
 
-        JLabel icon = imageLabel(getBadgeAssetFile(achievement), 44, 44);
+        JLabel icon = imageLabel(achievement.getImageName(), 92, 62);
+        icon.setPreferredSize(new Dimension(98, 64));
+        icon.setMinimumSize(new Dimension(98, 64));
+        icon.setMaximumSize(new Dimension(98, 64));
+
         if (icon.getIcon() == null) {
-            icon = new JLabel(new BadgeIcon(unlocked ? achievement.getColor() : LOCKED,
-                    unlocked ? achievement.getIconText() : "?"));
+            icon = new JLabel(new BadgeIcon(unlocked ? achievement.getColor() : LOCKED, "?"));
             icon.setHorizontalAlignment(SwingConstants.CENTER);
+            icon.setPreferredSize(new Dimension(98, 64));
+            icon.setMinimumSize(new Dimension(98, 64));
+            icon.setMaximumSize(new Dimension(98, 64));
         }
 
         JPanel textPanel = new JPanel();
         textPanel.setOpaque(false);
         textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
 
-        JLabel name = badgeText(achievement.getName(), HealiverseTheme.buttonFont(8),
-                unlocked ? INK : MUTED, 84, 24);
+        JLabel name = badgeText(
+                achievement.getName(),
+                HealiverseTheme.buttonFont(7),
+                unlocked ? INK : MUTED,
+                92,
+                28
+        );
 
-        JLabel status = badgeText(unlocked ? "Unlocked" : "Locked",
+        JLabel status = badgeText(
+                unlocked ? "Unlocked" : "Locked",
                 HealiverseTheme.bodyFont(7),
                 unlocked ? new Color(45, 128, 83) : MUTED,
-                84,
-                12);
+                92,
+                12
+        );
 
         textPanel.add(name);
         textPanel.add(status);
@@ -386,38 +363,13 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         return label;
     }
 
-    private String getBadgeAssetFile(Achievement achievement) {
-        String name = achievement.getName();
-
-        if ("First Steps".equals(name)) {
-            return "Book Badge.png";
-        }
-        if ("Growth".equals(name)) {
-            return "Leaf Badge.png";
-        }
-        if ("Helper".equals(name)) {
-            return "Heart Badge.png";
-        }
-        if ("Quiz Star".equals(name)) {
-            return "Star Badge.png";
-        }
-        if ("Top Score".equals(name)) {
-            return "Trophy Badge.png";
-        }
-        if ("Wellness Warrior".equals(name)) {
-            return "Cloud Badge.png";
-        }
-
-        return "Cloud Badge.png";
-    }
-
     // -------------------------------------------------------------------------
-    // Leaderboard Card
+    // Leaderboard Preview Card
     // -------------------------------------------------------------------------
 
     private JPanel createLeaderboardPanel() {
         JPanel card = cleanCard(new BorderLayout(0, 8));
-        fixedHeight(card, 150);
+        fixedHeight(card, 170);
 
         JPanel titleRow = sectionTitleRow("Leaderboard", "Best Scores");
 
@@ -427,8 +379,8 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
 
         if (leaderboard.isEmpty()) {
             rows.add(emptyLeaderboardLabel());
-            rows.add(blankRow());
-            rows.add(blankRow());
+            rows.add(blankLeaderboardRow(2));
+            rows.add(blankLeaderboardRow(3));
         } else {
             int limit = Math.min(3, leaderboard.size());
 
@@ -455,13 +407,6 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         empty.setBackground(new Color(255, 252, 247));
         empty.setBorder(new LineBorder(LINE, 1));
         return empty;
-    }
-
-    private JPanel blankRow() {
-        JPanel row = new JPanel();
-        row.setBackground(new Color(255, 252, 247));
-        row.setBorder(new LineBorder(LINE, 1));
-        return row;
     }
 
     private JPanel blankLeaderboardRow(int rank) {
@@ -552,7 +497,6 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
                 new EmptyBorder(10, 12, 10, 12)));
         card.setAlignmentX(Component.CENTER_ALIGNMENT);
         card.setMaximumSize(new Dimension(CARD_WIDTH, Integer.MAX_VALUE));
-        card.setPreferredSize(new Dimension(CARD_WIDTH, card.getPreferredSize().height));
         return card;
     }
 
@@ -573,18 +517,6 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         progress.setPreferredSize(new Dimension(150, 13));
         progress.setFont(HealiverseTheme.buttonFont(8));
         return progress;
-    }
-
-    private JButton pixelButton(String text) {
-        JButton button = new JButton(text);
-        button.setFont(HealiverseTheme.buttonFont(10));
-        button.setForeground(INK);
-        button.setBackground(new Color(255, 250, 255));
-        button.setFocusPainted(false);
-        button.setBorder(new CompoundBorder(
-                new LineBorder(LINE, 1),
-                new EmptyBorder(4, 7, 4, 7)));
-        return button;
     }
 
     private JLabel imageLabel(String fileName, int maxWidth, int maxHeight) {
@@ -628,12 +560,13 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
 
     public int calculatePoints(int bestPercentage, boolean completedLearning) {
         int quizPoints = bestPercentage * 5;
+        int correctAnswerPoints = profile.getBestScore() * 20;
         int learningPoints = (int) Math.round(profile.getLearningProgress() * 200);
         int attemptPoints = profile.getQuizAttempts() * 15;
-        int badgePoints = getUnlockedBadges().size() * 25;
+        int badgePoints = getUnlockedBadges().size() * 50;
         int completionBonus = completedLearning ? 150 : 0;
 
-        return quizPoints + learningPoints + attemptPoints + badgePoints + completionBonus;
+        return quizPoints + correctAnswerPoints + learningPoints + attemptPoints + badgePoints + completionBonus;
     }
 
     @Override
@@ -885,6 +818,10 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
     }
 }
 
+// -----------------------------------------------------------------------------
+// Custom Exception
+// -----------------------------------------------------------------------------
+
 class GamificationDataException extends Exception {
     public GamificationDataException(String message) {
         super(message);
@@ -894,6 +831,10 @@ class GamificationDataException extends Exception {
         super(message, cause);
     }
 }
+
+// -----------------------------------------------------------------------------
+// Game Profile
+// -----------------------------------------------------------------------------
 
 class GameProfile {
     private final String username;
@@ -992,6 +933,10 @@ class GameProfile {
     }
 }
 
+// -----------------------------------------------------------------------------
+// Score Entry
+// -----------------------------------------------------------------------------
+
 class ScoreEntry implements Comparable<ScoreEntry> {
     private final String username;
     private final int score;
@@ -1064,20 +1009,20 @@ class ScoreEntry implements Comparable<ScoreEntry> {
     }
 }
 
+// -----------------------------------------------------------------------------
+// Achievement Classes
+// -----------------------------------------------------------------------------
+
 abstract class Achievement {
     private final String name;
     private final String description;
-    private final String iconText;
+    private final String imageName;
     private final Color color;
 
-    public Achievement(String name, String description) {
-        this(name, description, "*", new Color(230, 230, 230));
-    }
-
-    public Achievement(String name, String description, String iconText, Color color) {
+    public Achievement(String name, String description, String imageName, Color color) {
         this.name = name;
         this.description = description;
-        this.iconText = iconText;
+        this.imageName = imageName;
         this.color = color;
     }
 
@@ -1091,8 +1036,8 @@ abstract class Achievement {
         return description;
     }
 
-    public String getIconText() {
-        return iconText;
+    public String getImageName() {
+        return imageName;
     }
 
     public Color getColor() {
@@ -1100,59 +1045,30 @@ abstract class Achievement {
     }
 }
 
+class QuizAchievement extends Achievement {
+    private final int requiredCorrectAnswers;
+
+    public QuizAchievement(String name, String description, String imageName, Color color, int requiredCorrectAnswers) {
+        super(name, description, imageName, color);
+        this.requiredCorrectAnswers = requiredCorrectAnswers;
+    }
+
+    @Override
+    public boolean isUnlocked(GameProfile profile) {
+        return profile.getBestScore() >= requiredCorrectAnswers;
+    }
+}
+
 class LearningAchievement extends Achievement {
     private final double requiredProgress;
-    private final boolean requiresCompletion;
 
-    public LearningAchievement(String name, String description, String iconText, Color color,
-                               double requiredProgress) {
-        super(name, description, iconText, color);
+    public LearningAchievement(String name, String description, String imageName, Color color, double requiredProgress) {
+        super(name, description, imageName, color);
         this.requiredProgress = requiredProgress;
-        this.requiresCompletion = false;
-    }
-
-    public LearningAchievement(String name, String description, String iconText, Color color,
-                               boolean requiresCompletion) {
-        super(name, description, iconText, color);
-        this.requiredProgress = 1.0;
-        this.requiresCompletion = requiresCompletion;
     }
 
     @Override
     public boolean isUnlocked(GameProfile profile) {
-        if (requiresCompletion) {
-            return profile.isCompletedLearning();
-        }
-
-        return profile.getLearningProgress() >= requiredProgress;
-    }
-}
-
-class QuizAchievement extends Achievement {
-    private final int requiredAttempts;
-    private final int requiredPercentage;
-
-    public QuizAchievement(String name, String description, String iconText, Color color,
-                           int requiredAttempts, int requiredPercentage) {
-        super(name, description, iconText, color);
-        this.requiredAttempts = requiredAttempts;
-        this.requiredPercentage = requiredPercentage;
-    }
-
-    @Override
-    public boolean isUnlocked(GameProfile profile) {
-        return profile.getQuizAttempts() >= requiredAttempts
-                && profile.getBestPercentage() >= requiredPercentage;
-    }
-}
-
-class ComboAchievement extends Achievement {
-    public ComboAchievement(String name, String description, String iconText, Color color) {
-        super(name, description, iconText, color);
-    }
-
-    @Override
-    public boolean isUnlocked(GameProfile profile) {
-        return profile.isCompletedLearning() && profile.getBestPercentage() >= 80;
+        return profile.getLearningProgress() >= requiredProgress || profile.isCompletedLearning();
     }
 }
