@@ -90,6 +90,7 @@ public class QuizModule extends JPanel implements Quizable {
     private JLabel hintLabel;
     private JButton nextButton;
     private JLabel feedbackLabel;
+    private JLabel heartLabel;
 
     // Result screen
     private JLabel scoreLabel;
@@ -252,6 +253,10 @@ public class QuizModule extends JPanel implements Quizable {
         questionNumberLabel.setFont(new Font("Monospaced", Font.BOLD, 13));
         questionNumberLabel.setForeground(DARK_TEXT);
 
+        heartLabel = new JLabel("❤️ ❤️ ❤️");
+        heartLabel.setFont(new Font("Monospaced", Font.BOLD, 14));
+        heartLabel.setForeground(DARK_TEXT);
+
         questionProgress = new JProgressBar(0, questions.size());
         questionProgress.setValue(1);
         questionProgress.setForeground(TEAL);
@@ -260,6 +265,7 @@ public class QuizModule extends JPanel implements Quizable {
         questionProgress.setBorderPainted(false);
 
         topBar.add(questionNumberLabel, BorderLayout.WEST);
+        topBar.add(questionProgress,    BorderLayout.EAST);
         topBar.add(questionProgress,    BorderLayout.SOUTH);
         screen.add(topBar, BorderLayout.NORTH);
 
@@ -267,10 +273,18 @@ public class QuizModule extends JPanel implements Quizable {
         JPanel content = new JPanel();
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         content.setBackground(WHITE);
-        content.setBorder(new EmptyBorder(20, 30, 10, 30));
+        content.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        JPanel card = new JPanel();
+        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        card.setBackground(new Color(255, 250, 245));
+        card.setBorder(BorderFactory.createCompoundBorder(
+                new LineBorder(new Color(220, 190, 255), 3, true),
+                new EmptyBorder(20, 20, 20, 20)
+        ));
 
         // Question type badge
-        questionTypeLabel = new JLabel("TRUE / FALSE");
+        questionTypeLabel = new JLabel("🧠 TRUE / FALSE");
         questionTypeLabel.setFont(new Font("Monospaced", Font.BOLD, 11));
         questionTypeLabel.setForeground(WHITE);
         questionTypeLabel.setOpaque(true);
@@ -330,6 +344,17 @@ public class QuizModule extends JPanel implements Quizable {
         content.add(feedbackLabel);
         
         screen.add(content, BorderLayout.CENTER);
+
+        //Card
+        card.add(questionTypeLabel);
+        card.add(Box.createVerticalStrut(14));
+        card.add(questionTextLabel);
+        card.add(Box.createVerticalStrut(24));
+        card.add(answerPanel);
+        card.add(Box.createVerticalStrut(12));
+        card.add(feedbackLabel);
+
+        content.add(card);
 
         // ── Bottom nav ──
         JPanel navBar = new JPanel(new BorderLayout());
@@ -465,7 +490,7 @@ public class QuizModule extends JPanel implements Quizable {
         answerPanel.removeAll();
 
         if (q.type.equals("TF")) {
-            questionTypeLabel.setText("TRUE / FALSE");
+            questionTypeLabel.setText("🧠 TRUE / FALSE");
             questionTypeLabel.setBackground(TEAL);
             trueButton.setBackground(new Color(40, 167, 69));
             falseButton.setBackground(RED);
@@ -473,7 +498,7 @@ public class QuizModule extends JPanel implements Quizable {
             answerPanel.add(Box.createVerticalStrut(10));
             answerPanel.add(falseButton);
         } else {
-            questionTypeLabel.setText("FILL IN THE BLANK");
+            questionTypeLabel.setText("✏️ FILL IN THE BLANK");
             questionTypeLabel.setBackground(new Color(100, 149, 237));
             fitbField.setText("");
             hintLabel.setText(q.hint);
@@ -548,9 +573,27 @@ public class QuizModule extends JPanel implements Quizable {
 
         scoreLabel.setText(score + " / " + total);
         percentageLabel.setText(percentage + "%");
-        messageLabel.setText(getMotivationalMessage(percentage));
-        detailLabel.setText("<html><center>You answered " + score + " out of " + total
-                + " questions correctly.</center></html>");
+        
+        String stars;
+
+        if (percentage >= 80)
+            stars = "⭐⭐⭐";
+        else if (percentage >= 50)
+            stars = "⭐⭐";
+        else
+            stars = "⭐";
+
+        messageLabel.setText(stars + " " + getMotivationalMessage(percentage));
+
+        detailLabel.setText(
+            "<html><center>"
+            + "🌸 Wellness Journey Complete! 🌸<br><br>"
+            + "You answered "
+            + score + " out of "
+            + total
+            + " questions correctly."
+            + "</center></html>"
+);
 
         // Save score to scores.txt
         saveScore(username, score, total, percentage);
