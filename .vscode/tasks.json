@@ -2,20 +2,43 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Clean TMF2954 Output",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-Command",
+        "if (Test-Path out) { Remove-Item -LiteralPath out -Recurse -Force }; New-Item -ItemType Directory -Path out | Out-Null"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Compile TMF2954 Project",
       "type": "shell",
       "command": "javac",
+      "dependsOn": "Clean TMF2954 Output",
+      "dependsOrder": "sequence",
       "args": [
         "-encoding",
         "UTF-8",
         "-d",
         "out",
-        "source code\\learning module\\LearningModule.java",
-        "source code\\quiz\\QuizModule.java",
-        "source code\\user login\\LoginApplication.java",
-        "source code\\gamification\\Reward.java",
-        "source code\\gamification\\GamificationModule.java",
-        "source code\\gamification\\MentalHealthGameApp.java"
+        "src\\HealiverseTheme.java",
+        "src\\HealiversePaths.java",
+        "src\\Displayable.java",
+        "src\\Navigable.java",
+        "src\\Quizable.java",
+        "src\\Reward.java",
+        "src\\LeaderboardProvider.java",
+        "src\\UserSession.java",
+        "src\\LearningModule.java",
+        "src\\QuizModule.java",
+        "src\\LoginApplication.java",
+        "src\\GamificationModule.java",
+        "src\\MentalHealthGameApp.java"
       ],
       "options": {
         "cwd": "${workspaceFolder}"

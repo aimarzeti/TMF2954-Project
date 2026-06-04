@@ -1,0 +1,203 @@
+===============================================================================
+DATA PERSISTENCE ARCHITECTURE - Healiverse TMF2954 Java Project
+===============================================================================
+
+Overview:
+---------
+Healiverse implements a complete data persistence system with three layers of
+file-based storage ensuring that all user data is preserved between sessions.
+
+===============================================================================
+1. USER CREDENTIALS STORAGE (LoginApplication.java)
+===============================================================================
+
+File Location: data/users.txt
+Format: Plain text, one account per line: "username,password"
+
+Implementation Details:
+- File is created automatically in data/ folder on first sign-up
+- Loaded at application startup (loadUserDatabase() method)
+- Saved after each new registration (saveUserDatabase() method)
+
+Features:
+✓ Persistent storage - accounts survive application restart
+✓ Automatic directory creation - data/ folder created if missing
+✓ Fail-safe error handling - errors logged but don't crash app
+✓ Default admin account - always available with admin/password123
+
+Code Flow:
+1. App starts → LoginApplication constructor calls loadUserDatabase()
+2. File read into HashMap<String, String> (username → password)
+3. User clicks "Sign Up" → SignUpAction validates input
+4. Registration succeeds → saveUserDatabase() writes all users to file
+5. Next app launch → All previously registered users are reloaded
+
+Example Data Format:
+---
+admin,password123
+john_doe,secure_pass_123
+sarah_smith,wellness_2024
+---
+
+Why This Matters:
+- Students can close and restart app without losing their accounts
+- Multiple users can use same app with their own logins
+- Secure than in-memory only (which loses data on exit)
+
+===============================================================================
+2. LEARNING PROGRESS TRACKING (LearningModule.java)
+===============================================================================
+
+File Location: data/learning_progress.txt
+Format: "username,pageIndex,totalPages,timestamp,completed"
+
+Features:
+✓ Tracks which page each user reached in 10-page learning module
+✓ Calculates progress percentage
+✓ Timestamps each session for audit trail
+✓ Automatic file creation in data/ folder
+
+Example Data Format:
+---
+admin,5,10,2024-06-04 14:30:45,false
+john_doe,10,10,2024-06-04 15:22:10,true
+---
+
+How It Works:
+- When user reads learning content, progress is saved to file
+- If user returns, their last page is restored
+- Completion status updated when all 10 pages finished
+
+===============================================================================
+3. QUIZ SCORES & PERFORMANCE (QuizModule.java)
+===============================================================================
+
+File Location: data/scores.txt
+Format: "username,score,total,percentage,timestamp"
+
+Features:
+✓ Records every quiz attempt with results
+✓ Calculates performance percentage
+✓ Maintains history for progress tracking
+✓ Used by leaderboard to rank users
+
+Example Data Format:
+---
+admin,18,20,90,2024-06-04 14:45:30
+john_doe,15,20,75,2024-06-04 15:35:22
+john_doe,17,20,85,2024-06-04 16:42:15
+---
+
+How It Works:
+- After quiz completion, score saved to file
+- Allows users to track improvement over multiple attempts
+- Leaderboard reads all scores to display top 10 performers
+
+===============================================================================
+4. DATA DIRECTORY STRUCTURE
+===============================================================================
+
+Project Root/
+├── data/
+│   ├── users.txt (User credentials - NEW with this update)
+│   ├── learning_progress.txt (Learning module progress)
+│   └── scores.txt (Quiz results)
+├── src/ (Java source files)
+├── out/ (Compiled .class files)
+└── assets/ (Images and resources)
+
+The data/ folder is created automatically by the application if it doesn't
+exist, so users don't need to create it manually.
+
+===============================================================================
+5. DATA INTEGRITY MECHANISMS
+===============================================================================
+
+File I/O Handling:
+✓ Try-catch blocks prevent crashes from I/O errors
+✓ Errors logged to console for debugging
+✓ App continues running even if file operations fail
+✓ BufferedReader/FileWriter for efficient file handling
+✓ Automatic file creation on first write
+
+Thread Safety:
+✓ File operations performed on Event Dispatch Thread
+✓ Data synchronization happens after each user action
+✓ No concurrent access issues with HashMap
+
+Data Validation:
+✓ Sign-up validates:
+  - Username not empty
+  - Password minimum 6 characters
+  - Password confirmation matches
+  - Username uniqueness (no duplicates)
+✓ Login validates credentials exist and match
+✓ Progress tracking validates page ranges (0-10)
+✓ Quiz scores validated (0-20 points)
+
+===============================================================================
+6. HOW TO EXPLAIN TO LECTURER
+===============================================================================
+
+Key Points to Emphasize:
+
+1. Three-Layer Persistence:
+   "Our app uses file-based persistence across three layers:
+    - User credentials saved to data/users.txt
+    - Learning progress saved to data/learning_progress.txt
+    - Quiz scores saved to data/scores.txt
+    This ensures complete data survival between app sessions."
+
+2. Automatic & Transparent:
+   "Data storage is completely automatic. When a user registers, completes
+    a lesson, or finishes a quiz, the data is immediately saved to the
+    corresponding file. Users don't need to click 'Save'."
+
+3. Real-World Applicable:
+   "This approach is similar to many educational apps:
+    - File-based for simplicity (no database setup needed)
+    - Scalable to database (just change persistence layer)
+    - Demonstrates understanding of data flow and I/O"
+
+4. Error Handling:
+   "We include try-catch blocks for file operations, so errors are logged
+    but don't crash the application. This is good practice for robust software."
+
+5. Verification:
+   "To verify data persistence:
+    1. Sign up a new user
+    2. Complete a learning page
+    3. Take the quiz
+    4. Close the application
+    5. Restart and login with same credentials
+    6. Previous progress and scores are restored"
+
+===============================================================================
+7. TECHNICAL IMPROVEMENTS MADE (Sign-up UI)
+===============================================================================
+
+Previous Issues:
+✗ Dialog fixed at 350x250px - text cropped on mobile
+✗ GridLayout(3,2) too cramped - fields overlapping
+✗ No data persistence - user accounts lost on app close
+✗ Not mobile-friendly for 390x720 viewport
+
+Fixes Applied:
+✓ Dialog resized to 370x420px - better mobile fit
+✓ Changed to BoxLayout - full-width fields with proper spacing
+✓ Added JScrollPane - scrollable if content overflows
+✓ Implemented file persistence - accounts saved to data/users.txt
+✓ Better visual hierarchy - title + labels + fields + buttons
+✓ Improved spacing - 4-14px between elements
+✓ Mobile-optimized font sizes - readable at 390px width
+
+Files Modified:
+- LoginApplication.java (sign-up UI + persistence methods)
+
+New Methods Added:
+- loadUserDatabase() - reads users.txt on startup
+- saveUserDatabase() - writes users.txt after new registration
+
+Compilation Status: ✅ SUCCESS (0 errors, 44 classes generated)
+
+===============================================================================

@@ -3,24 +3,46 @@
   "configurations": [
     {
       "type": "java",
+      "name": "LearningModule",
+      "request": "launch",
+      "mainClass": "LearningModule",
+      "projectName": "TMF2954-Project_e1213d0f"
+    },
+    {
+      "type": "java",
       "name": "GamificationModule",
       "request": "launch",
       "mainClass": "GamificationModule",
-      "projectName": "TMF2954-Project_e1213d0f"
+      "classPaths": [
+        "${workspaceFolder}/out",
+        "${workspaceFolder}"
+      ],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Compile TMF2954 Project"
     },
     {
       "type": "java",
       "name": "MentalHealthGameApp",
       "request": "launch",
       "mainClass": "MentalHealthGameApp",
-      "projectName": "TMF2954-Project_e1213d0f"
+      "classPaths": [
+        "${workspaceFolder}/out",
+        "${workspaceFolder}"
+      ],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Compile TMF2954 Project"
     },
     {
       "type": "java",
       "name": "QuizModule",
       "request": "launch",
       "mainClass": "QuizModule",
-      "projectName": "TMF2954-Project_e1213d0f"
+      "classPaths": [
+        "${workspaceFolder}/out",
+        "${workspaceFolder}"
+      ],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Compile TMF2954 Project"
     },
     {
       "type": "java",
@@ -31,6 +53,7 @@
         "${workspaceFolder}/out",
         "${workspaceFolder}"
       ],
+      "cwd": "${workspaceFolder}",
       "preLaunchTask": "Compile TMF2954 Project"
     }
   ]

@@ -2,20 +2,28 @@
 setlocal
 cd /d "%~dp0"
 
-if not exist out mkdir out
+if exist out rmdir /s /q out
+mkdir out
 
 javac -encoding UTF-8 -d out ^
-  "source code\learning module\LearningModule.java" ^
-  "source code\quiz\QuizModule.java" ^
-  "source code\user login\LoginApplication.java" ^
-  "source code\gamification\Reward.java" ^
-  "source code\gamification\GamificationModule.java" ^
-  "source code\gamification\MentalHealthGameApp.java"
+  "src\HealiverseTheme.java" ^
+  "src\HealiversePaths.java" ^
+  "src\Displayable.java" ^
+  "src\Navigable.java" ^
+  "src\Quizable.java" ^
+  "src\Reward.java" ^
+  "src\LeaderboardProvider.java" ^
+  "src\UserSession.java" ^
+  "src\LearningModule.java" ^
+  "src\QuizModule.java" ^
+  "src\LoginApplication.java" ^
+  "src\GamificationModule.java" ^
+  "src\MentalHealthGameApp.java"
 
 if errorlevel 1 (
   echo Compilation failed.
   exit /b 1
 )
 
-java -cp "out;." LoginApplication
+java -cp "out;." MentalHealthGameApp
 endlocal
