@@ -22,6 +22,7 @@ import java.util.HashMap;
  * Connects to MentalHealthGameApp (Main Dashboard) after successful login.
  * Part of TMF2954 Java Programming Project — SDG 3: Good Health & Well-Being.
  */
+
 public class LoginApplication extends JFrame implements UserSession {
 
     // --- User credentials storage ---

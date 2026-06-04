@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
  * Contains all interfaces and functionalities for the learning module, 
  * including quizzes, informational content, and interactive activities.
  */
+
 public class LearningModule extends JPanel implements Displayable, Navigable {
     static class InvalidPageException extends Exception {
         private final int attemptedIndex;

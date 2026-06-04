@@ -3,6 +3,9 @@
  * Purpose: Defines navigation contract for multi-page content modules.
  * Implemented by: LearningModule
  */
+
+// for defining navigation contract for multi-page content modules, allowing for consistent page control across different implementations
+// for example, learning modules, quizzes, etc.
 public interface Navigable {
     /**
      * Move to the next page.

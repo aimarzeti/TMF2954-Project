@@ -1,10 +1,11 @@
-import javax.swing.JPanel;
-
 /**
  * Interface: Displayable
  * Purpose: Defines the contract for UI components that display educational content.
  * Implemented by: LearningPage, LearningModule
  */
+
+import javax.swing.JPanel;
+
 public interface Displayable {
     /**
      * Display the content on the given panel.

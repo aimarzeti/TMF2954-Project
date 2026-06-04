@@ -1,5 +1,3 @@
-import java.util.List;
-
 /**
  * Interface: Reward
  * Creator: Zeti Nur Aimar binti Ali
@@ -7,6 +5,9 @@ import java.util.List;
  * Purpose: Defines the reward contract used by the gamification module.
  * Implemented by: GamificationModule
  */
+
+import java.util.List;
+
 public interface Reward {
     /**
      * Calculate total points earned.

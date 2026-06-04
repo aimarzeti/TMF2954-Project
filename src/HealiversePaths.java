@@ -10,6 +10,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+// for loading images and data files with flexible paths and caching
 public final class HealiversePaths {
     private static final String ASSET_ROOT = "assets/images";
     private static final String LEGACY_IMAGE_ROOT = "images";

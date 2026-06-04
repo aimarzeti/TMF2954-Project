@@ -3,6 +3,9 @@
  * Purpose: Defines the contract for quiz modules.
  * Implemented by: QuizModule
  */
+
+// for defining quiz contract, allowing for consistent quiz behavior across different implementations 
+// for example, multiple choice quizzes, true/false quizzes, etc.
 public interface Quizable {
     /**
      * Start a new quiz session.

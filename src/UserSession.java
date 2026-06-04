@@ -5,6 +5,7 @@
  * Purpose: Defines login session behaviours for the Healiverse app.
  * Implemented by: LoginApplication
  */
+
 public interface UserSession {
     String getUsername();
 

@@ -1,14 +1,15 @@
+// Class: MentalHealthGameApp
+// Creator: Zeti Nur Aimar binti Ali
+// Tester: G04/SE Group 14
+// Description: Phone-sized desktop launcher that connects learning, quiz,
+// and gamification screens with a pastel pixel wellness experience.
+
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-// Class: MentalHealthGameApp
-// Creator: Zeti Nur Aimar binti Ali
-// Tester: G04/SE Group 14
-// Description: Phone-sized desktop launcher that connects learning, quiz,
-// and gamification screens with a pastel pixel wellness experience.
 public class MentalHealthGameApp extends JFrame {
 
     private static final int PHONE_WIDTH = HealiverseTheme.PHONE_WIDTH;

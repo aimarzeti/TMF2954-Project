@@ -5,6 +5,8 @@ import java.util.List;
  * Purpose: Defines the contract for loading leaderboard data.
  * Implemented by: GamificationModule
  */
+
+// for loading leaderboard data from storage, allowing for flexible implementations (for example, file-based, database, etc.)
 public interface LeaderboardProvider {
     /**
      * Load leaderboard data from storage.
