@@ -279,7 +279,7 @@ public class QuizModule extends JPanel implements Quizable {
         content.add(Box.createVerticalStrut(14));
 
         // Question text
-        questionTextLabel = new JLabel("<html><body style='width:300px'></body></html>");
+        questionTextLabel = new JLabel("<html><body style='width:280px'></body></html>");
         questionTextLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
         questionTextLabel.setForeground(DARK_TEXT);
         questionTextLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -323,10 +323,8 @@ public class QuizModule extends JPanel implements Quizable {
         feedbackLabel.setForeground(TEAL);
         feedbackLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         content.add(feedbackLabel);
-
-        JScrollPane scroll = new JScrollPane(content);
-        scroll.setBorder(null);
-        screen.add(scroll, BorderLayout.CENTER);
+        
+        screen.add(content, BorderLayout.CENTER);
 
         // ── Bottom nav ──
         JPanel navBar = new JPanel(new BorderLayout());
@@ -456,7 +454,7 @@ public class QuizModule extends JPanel implements Quizable {
         questionProgress.setValue(currentIndex + 1);
 
         // Update question text
-        questionTextLabel.setText("<html><body style='width:300px'>" + q.questionText + "</body></html>");
+        questionTextLabel.setText("<html><body style='width:280px'>" + q.questionText + "</body></html>");
 
         // Update answer area
         answerPanel.removeAll();
