@@ -1,6 +1,8 @@
 /**
- * Interface: Displayable
- * Purpose: Defines the contract for UI components that display educational content.
+ * Class/Interface: Displayable
+ * Creator: Reselda Anak Robie
+ * Tester: G04/SE Group 14
+ * Description: Defines the contract for UI components that display educational content.
  * Implemented by: LearningPage, LearningModule
  */
 

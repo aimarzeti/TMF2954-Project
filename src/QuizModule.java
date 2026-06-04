@@ -1,5 +1,5 @@
 /**
- * Class: QuizModule
+ * Class/Interface: QuizModule
  * Creator: Noor Azuah binti Sawal (105404)
  * Tester: G04/SE Group 14
  * Description: Quiz module for SDG 3: Good Health and Well-being (Mental Health).

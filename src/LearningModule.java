@@ -1,3 +1,10 @@
+/**
+ * Class/Interface: LearningModule
+ * Creator: Reselda Anak Robie
+ * Tester: G04/SE Group 14
+ * Description: Learning module for SDG 3 mental health content and activities.
+ */
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -7,14 +14,6 @@ import java.util.List;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-/**
- * Class: LearningModule
- * Creator: Reselda Anak Robie
- * Main learning module for SDG 3: Good Health and Well-being (Mental Health)
- * Contains all interfaces and functionalities for the learning module, 
- * including quizzes, informational content, and interactive activities.
- */
 
 public class LearningModule extends JPanel implements Displayable, Navigable {
     static class InvalidPageException extends Exception {

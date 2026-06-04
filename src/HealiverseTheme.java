@@ -1,3 +1,10 @@
+/**
+ * Class/Interface: HealiverseTheme
+ * Creator: Zeti Nur Aimar binti Ali
+ * Tester: G04/SE Group 14
+ * Description: Central theme configuration for consistent Healiverse UI styling.
+ */
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -9,11 +16,6 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-/**
- * Theme: HealiverseTheme
- * Central theme configuration for the Healiverse application.
- * Ensures consistent colors, fonts, and dimensions throughout the UI.
- */
 public final class HealiverseTheme {
     // DIMENSIONS
     public static final int PHONE_WIDTH = 390;

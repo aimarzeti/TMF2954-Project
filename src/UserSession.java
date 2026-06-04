@@ -1,8 +1,8 @@
 /**
- * Interface: UserSession
+ * Class/Interface: UserSession
  * Creator: Keweil Anak Bansa
  * Tester: G04/SE Group 14
- * Purpose: Defines login session behaviours for the Healiverse app.
+ * Description: Defines login session behaviours for the Healiverse app.
  * Implemented by: LoginApplication
  */
 

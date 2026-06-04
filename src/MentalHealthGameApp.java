@@ -1,8 +1,9 @@
-// Class: MentalHealthGameApp
-// Creator: Zeti Nur Aimar binti Ali
-// Tester: G04/SE Group 14
-// Description: Main phone-sized desktop launcher for the HEALIVERSE SDG 3 app.
-// Connects learning, quiz, rewards, leaderboard, and logout navigation using CardLayout.
+/**
+ * Class/Interface: MentalHealthGameApp
+ * Creator: Keweil Anak Bansa
+ * Tester: G04/SE Group 14
+ * Description: Main phone-sized desktop launcher for the HEALIVERSE SDG 3 app.
+ */
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;

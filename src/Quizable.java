@@ -1,11 +1,11 @@
 /**
- * Interface: Quizable
- * Purpose: Defines the contract for quiz modules.
+ * Class/Interface: Quizable
+ * Creator: Noor Azuah binti Sawal
+ * Tester: G04/SE Group 14
+ * Description: Defines the contract for quiz modules.
  * Implemented by: QuizModule
  */
 
-// for defining quiz contract, allowing for consistent quiz behavior across different implementations 
-// for example, multiple choice quizzes, true/false quizzes, etc.
 public interface Quizable {
     /**
      * Start a new quiz session.

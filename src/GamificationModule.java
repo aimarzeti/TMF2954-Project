@@ -1,3 +1,21 @@
+/**
+ * Class/Interface: GamificationModule
+ * Creator: Zeti Nur Aimar binti Ali
+ * Tester: G04/SE Group 14
+ * Description: Rewards and gamification module for the HEALIVERSE SDG 3 mental health app.
+ *
+ * This module reads learning progress and quiz scores from text files, then displays
+ * points, stars, quiz badges, learning badge, and leaderboard preview.
+ *
+ * OOP concepts used:
+ * - Interface implementation: Reward, LeaderboardProvider
+ * - Abstraction: abstract Achievement class
+ * - Inheritance: LearningAchievement, QuizAchievement
+ * - Polymorphism/Overriding: isUnlocked() method
+ * - Overloading: calculatePoints() methods
+ * - Custom exception: GamificationDataException
+ */
+
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -11,24 +29,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Class: GamificationModule
- * Creator: Zeti Nur Aimar binti Ali
- * Tester: G04/SE Group 14
- *
- * Description:
- * Rewards and gamification module for the HEALIVERSE SDG 3 mental health app.
- * This module reads learning progress and quiz scores from text files, then displays
- * points, stars, quiz badges, learning badge, and leaderboard preview.
- *
- * OOP concepts used:
- * - Interface implementation: Reward, LeaderboardProvider
- * - Abstraction: abstract Achievement class
- * - Inheritance: LearningAchievement, QuizAchievement
- * - Polymorphism/Overriding: isUnlocked() method
- * - Overloading: calculatePoints() methods
- * - Custom exception: GamificationDataException
- */
 public class GamificationModule extends JPanel implements Reward, LeaderboardProvider {
 
     private static final String SCORES_FILE = "scores.txt";

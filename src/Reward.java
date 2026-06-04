@@ -1,8 +1,8 @@
 /**
- * Interface: Reward
+ * Class/Interface: Reward
  * Creator: Zeti Nur Aimar binti Ali
  * Tester: G04/SE Group 14
- * Purpose: Defines the reward contract used by the gamification module.
+ * Description: Defines the reward contract used by the gamification module.
  * Implemented by: GamificationModule
  */
 

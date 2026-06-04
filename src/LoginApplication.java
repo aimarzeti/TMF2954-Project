@@ -1,3 +1,13 @@
+/**
+ * Class/Interface: LoginApplication
+ * Creator: Keweil Anak Bansa
+ * Tester: G04/SE Group 14
+ * Description: Login and sign-up screen for the HEALIVERSE app.
+ * Implements UserSession to manage login state and user credentials.
+ * Connects to MentalHealthGameApp (Main Dashboard) after successful login.
+ * Part of TMF2954 Java Programming Project - SDG 3: Good Health & Well-Being.
+ */
+
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -12,16 +22,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-
-/**
- * Class: LoginApplication
- * Creator: Keweil Anak Bansa
- * Tester: G04/SE Group 14
- * Description: Login and sign-up screen for the HEALIVERSE app.
- * Implements UserSession to manage login state and user credentials.
- * Connects to MentalHealthGameApp (Main Dashboard) after successful login.
- * Part of TMF2954 Java Programming Project — SDG 3: Good Health & Well-Being.
- */
 
 public class LoginApplication extends JFrame implements UserSession {
 

@@ -1,11 +1,11 @@
 /**
- * Interface: Navigable
- * Purpose: Defines navigation contract for multi-page content modules.
+ * Class/Interface: Navigable
+ * Creator: Reselda Anak Robie
+ * Tester: G04/SE Group 14
+ * Description: Defines the navigation contract for multi-page content modules.
  * Implemented by: LearningModule
  */
 
-// for defining navigation contract for multi-page content modules, allowing for consistent page control across different implementations
-// for example, learning modules, quizzes, etc.
 public interface Navigable {
     /**
      * Move to the next page.

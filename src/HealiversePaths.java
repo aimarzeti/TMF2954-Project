@@ -1,3 +1,10 @@
+/**
+ * Class/Interface: HealiversePaths
+ * Creator: Noor Azuah binti Sawal
+ * Tester: G04/SE Group 14
+ * Description: Helper class for loading image assets and data files from safe paths.
+ */
+
 import javax.swing.ImageIcon;
 import java.awt.Image;
 import java.awt.Graphics2D;
@@ -10,7 +17,6 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-// for loading images and data files with flexible paths and caching
 public final class HealiversePaths {
     private static final String ASSET_ROOT = "assets/images";
     private static final String LEGACY_IMAGE_ROOT = "images";

@@ -1,12 +1,13 @@
-import java.util.List;
-
 /**
- * Interface: LeaderboardProvider
- * Purpose: Defines the contract for loading leaderboard data.
+ * Class/Interface: LeaderboardProvider
+ * Creator: Zeti Nur Aimar binti Ali
+ * Tester: G04/SE Group 14
+ * Description: Defines the contract for loading leaderboard data.
  * Implemented by: GamificationModule
  */
 
-// for loading leaderboard data from storage, allowing for flexible implementations (for example, file-based, database, etc.)
+import java.util.List;
+
 public interface LeaderboardProvider {
     /**
      * Load leaderboard data from storage.
