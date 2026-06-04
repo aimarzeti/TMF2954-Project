@@ -120,105 +120,105 @@ public class QuizModule extends JPanel implements Quizable {
 
     private void buildQuestions() {
 
-        // Page 1 — What is Mental Health
+        // What is Mental Health
         questions.add(new Question("TF",
             "According to the WHO, mental health is a state of well-being where a person can realise their own potential and contribute to their community.",
             "True"));
 
         questions.add(new Question("FITB",
-            "Mental illness is NOT a sign of weakness — it is a ________ issue.",
+            "Mental illness is NOT a sign of weakness — it is a _______ issue.",
             "medical",
-            "Hint: Think about what doctors treat. [-------]"));
+            "Hint[7]: Think about what doctors treat."));
 
-        // Page 2 — The Mental Health Spectrum
+        // The Mental Health Spectrum
         questions.add(new Question("TF",
             "The mental health spectrum only has two states: healthy and ill.",
             "False"));
 
         questions.add(new Question("FITB",
-            "When a person is unable to function and needs immediate professional support, they are said to be in ________.",
+            "When a person is unable to function and needs immediate professional support, they are said to be in ______.",
             "crisis",
-            "Hint: The most severe point on the spectrum.[------]"));
+            "Hint[6]: The most severe point on the spectrum."));
 
-        // Page 3 — Common Mental Health Conditions
+        // Common Mental Health Conditions
         questions.add(new Question("TF",
             "Depression affects over 280 million people globally according to the WHO (2023).",
             "True"));
 
         questions.add(new Question("FITB",
-            "Excessive worry or fear that interferes with daily life is called an ________ disorder.",
+            "Excessive worry or fear that interferes with daily life is called an _______ disorder.",
             "anxiety",
-            "Hint: Feeling nervous or fearful.[-------]"));
+            "Hint[7]: Feeling nervous or fearful."));
 
-        // Page 4 — Warning Signs
+        // Warning Signs
         questions.add(new Question("TF",
             "Sleeping too much or too little can be a warning sign of a mental health struggle.",
             "True"));
 
         questions.add(new Question("FITB",
-            "Avoiding friends, family, and activities you used to enjoy is known as social ________.",
+            "Avoiding friends, family, and activities you used to enjoy is known as social __________.",
             "withdrawal",
-            "Hint: Pulling away from others.[----------]"));
+            "Hint[10]: Pulling away from others."));
 
-        // Page 5 — The Brain and Mental Health
+        // The Brain and Mental Health
         questions.add(new Question("TF",
             "High cortisol levels over a long period can damage memory and mood.",
             "True"));
 
         questions.add(new Question("FITB",
-            "The neurotransmitter that regulates mood, sleep, and appetite is called ________.",
+            "The neurotransmitter that regulates mood, sleep, and appetite is called _________.",
             "serotonin",
-            "Hint: Low levels of this are linked to depression.[---------]"));
+            "Hint[9]: Low levels of this are linked to depression."));
 
-        // Page 6 — Mental Health in Malaysia
+        // Mental Health in Malaysia
         questions.add(new Question("TF",
             "According to the NHMS 2019, 1 in 3 Malaysians experience a mental health issue.",
             "True"));
 
         questions.add(new Question("FITB",
-            "One major barrier to seeking mental health help in Malaysia is social ________, also known as 'malu'.",
+            "One major barrier to seeking mental health help in Malaysia is social ______, also known as 'malu'.",
             "stigma",
-            "Hint: Fear of being judged by others.[------]"));
+            "Hint[6]: Fear of being judged by others."));
 
-        // Page 7 — Healthy Coping Strategies
+        // Healthy Coping Strategies
         questions.add(new Question("TF",
             "30 minutes of moderate exercise 5 times a week can reduce depression symptoms as effectively as some medications.",
             "True"));
 
         questions.add(new Question("FITB",
-            "Writing your thoughts and feelings in a diary is called ________.",
+            "Writing your thoughts and feelings in a diary is called __________.",
             "journaling",
-            "Hint: A personal writing practice.[----------]"));
+            "Hint[10]: A personal writing practice."));
 
-        // Page 8 — Mindfulness and Breathing
+        // Mindfulness and Breathing
         questions.add(new Question("TF",
             "In the 4-7-8 breathing technique, you breathe out for 4 seconds.",
             "False"));
 
         questions.add(new Question("FITB",
-            "The 5-4-3-2-1 grounding technique helps anchor you to the ________ moment.",
+            "The 5-4-3-2-1 grounding technique helps anchor you to the _______ moment.",
             "present",
-            "Hint: The opposite of past or future.[-------]"));
+            "Hint[7]: The opposite of past or future."));
 
-        // Page 9 — When to Seek Professional Help
+        // When to Seek Professional Help
         questions.add(new Question("TF",
             "You should seek professional help if your symptoms have lasted more than 2 weeks.",
             "True"));
 
         questions.add(new Question("FITB",
-            "A ________ is a medical doctor who can diagnose mental health conditions and prescribe medication.",
+            "A ____________ is a medical doctor who can diagnose mental health conditions and prescribe medication.",
             "psychiatrist",
-            "Hint: The most specialised mental health professional.[------------]"));
+            "Hint[12]: The most specialised mental health professional."));
 
-        // Page 10 — Resources and Support
+        // Resources and Support
         questions.add(new Question("TF",
             "Befrienders Kuala Lumpur operates a 24-hour emotional support hotline.",
             "True"));
 
         questions.add(new Question("FITB",
-            "Most university counselling services are offered for ________ to students.",
+            "Most university counselling services are offered for ____ to students.",
             "free",
-            "Hint: No cost involved.[----]"));
+            "Hint[4]: No cost involved."));
     }
 
     //UI Construction=============================================================================
@@ -250,7 +250,7 @@ public class QuizModule extends JPanel implements Quizable {
         topBar.setBorder(new EmptyBorder(10, 14, 10, 14));
 
         questionNumberLabel = new JLabel("Question 1 of " + questions.size());
-        questionNumberLabel.setFont(new Font("Monospaced", Font.BOLD, 13));
+        questionNumberLabel.setFont(new Font("Monospaced", Font.BOLD, 10));
         questionNumberLabel.setForeground(DARK_TEXT);
 
         heartLabel = new JLabel("❤️ ❤️ ❤️");
@@ -265,27 +265,27 @@ public class QuizModule extends JPanel implements Quizable {
         questionProgress.setBorderPainted(false);
 
         topBar.add(questionNumberLabel, BorderLayout.WEST);
-        topBar.add(questionProgress,    BorderLayout.EAST);
-        topBar.add(questionProgress,    BorderLayout.SOUTH);
+        topBar.add(questionProgress, BorderLayout.SOUTH);
+	topBar.add(heartLabel, BorderLayout.EAST);
         screen.add(topBar, BorderLayout.NORTH);
 
         // ── Content ──
         JPanel content = new JPanel();
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         content.setBackground(WHITE);
-        content.setBorder(new EmptyBorder(20, 20, 20, 20));
+        content.setBorder(new EmptyBorder(12, 12, 12, 12));
 
         JPanel card = new JPanel();
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
         card.setBackground(new Color(255, 250, 245));
         card.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(new Color(220, 190, 255), 3, true),
-                new EmptyBorder(20, 20, 20, 20)
+                new EmptyBorder(15, 15, 15, 15)
         ));
 
         // Question type badge
         questionTypeLabel = new JLabel("🧠 TRUE / FALSE");
-        questionTypeLabel.setFont(new Font("Monospaced", Font.BOLD, 11));
+        questionTypeLabel.setFont(new Font("Monospaced", Font.BOLD, 10));
         questionTypeLabel.setForeground(WHITE);
         questionTypeLabel.setOpaque(true);
         questionTypeLabel.setBackground(TEAL);
@@ -294,16 +294,12 @@ public class QuizModule extends JPanel implements Quizable {
             new EmptyBorder(4, 10, 4, 10)
             ));
         questionTypeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        content.add(questionTypeLabel);
-        content.add(Box.createVerticalStrut(14));
 
         // Question text
-        questionTextLabel = new JLabel("<html><body style='width:280px'></body></html>");
-        questionTextLabel.setFont(new Font("Monospaced", Font.PLAIN, 15));
+        questionTextLabel = new JLabel();
+        questionTextLabel.setFont(new Font("Monospaced", Font.PLAIN, 14));
         questionTextLabel.setForeground(DARK_TEXT);
         questionTextLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        content.add(questionTextLabel);
-        content.add(Box.createVerticalStrut(24));
 
         // Answer area (swaps between TF buttons and FITB field)
         answerPanel = new JPanel();
@@ -333,16 +329,11 @@ public class QuizModule extends JPanel implements Quizable {
         hintLabel.setForeground(new Color(150, 150, 150));
         hintLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        content.add(answerPanel);
-        content.add(Box.createVerticalStrut(12));
-
         // Feedback label
         feedbackLabel = new JLabel(" ");
         feedbackLabel.setFont(new Font("Monospaced", Font.BOLD, 13));
         feedbackLabel.setForeground(TEAL);
-        feedbackLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        content.add(feedbackLabel);
-        
+        feedbackLabel.setAlignmentX(Component.LEFT_ALIGNMENT);        
         screen.add(content, BorderLayout.CENTER);
 
         //Card
@@ -484,7 +475,7 @@ public class QuizModule extends JPanel implements Quizable {
         questionProgress.setValue(currentIndex + 1);
 
         // Update question text
-        questionTextLabel.setText("<html><body style='width:280px'>" + q.questionText + "</body></html>");
+        questionTextLabel.setText("<html>" + q.questionText + "</html>");
 
         // Update answer area
         answerPanel.removeAll();
