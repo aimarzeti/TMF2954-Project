@@ -33,6 +33,7 @@ public class QuizModule extends JPanel implements Quizable {
     private static final Color LINE = HealiverseTheme.LINE;
     private static final Color MUTED_TEXT = HealiverseTheme.MUTED_PURPLE;
     private static final Color PURPLE = new Color(100, 82, 166);
+    private static final Color POPUP_BG = new Color(255, 252, 247);
 
     private static final int MODULE_WIDTH = HealiverseTheme.MODULE_WIDTH;
     private static final int MODULE_HEIGHT = HealiverseTheme.MODULE_HEIGHT;
@@ -62,6 +63,12 @@ public class QuizModule extends JPanel implements Quizable {
     private int score;
     private String username;
     private String userAnswer;
+
+    private boolean quizStarterShown;
+    private boolean brainBoosterShown;
+    private boolean smartSproutShown;
+    private boolean wellnessProShown;
+    private boolean perfectMindShown;
 
     private CardLayout cardLayout;
     private JPanel mainPanel;
@@ -95,6 +102,7 @@ public class QuizModule extends JPanel implements Quizable {
 
         buildQuestions();
         buildUI();
+        resetLiveBadges();
     }
 
     public QuizModule() {
@@ -307,7 +315,7 @@ public class QuizModule extends JPanel implements Quizable {
         fitbField = new JTextField();
         fitbField.setFont(HealiverseTheme.bodyFont(14));
         fitbField.setForeground(DARK_TEXT);
-        HealiverseTheme.setFixedSize(fitbField, ANSWER_WIDTH - 20, HealiverseTheme.BUTTON_HEIGHT);
+        HealiverseTheme.setFixedSize(fitbField, 245, HealiverseTheme.BUTTON_HEIGHT);
         fitbField.setHorizontalAlignment(JTextField.CENTER);
         fitbField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(LINE, 1, true),
@@ -494,7 +502,7 @@ public class QuizModule extends JPanel implements Quizable {
             fitbField.setText("");
             hintLabel.setText("<html><center>" + question.hint + "</center></html>");
 
-            JPanel inputWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+            JPanel inputWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 18, 0));
             inputWrapper.setOpaque(false);
             inputWrapper.setAlignmentX(Component.CENTER_ALIGNMENT);
             inputWrapper.setMaximumSize(new Dimension(ANSWER_WIDTH, 46));
@@ -544,6 +552,7 @@ public class QuizModule extends JPanel implements Quizable {
             score++;
             feedbackLabel.setText("<html><center>Correct!</center></html>");
             feedbackLabel.setForeground(new Color(91, 151, 93));
+            checkLiveBadgeUnlock();
         } else {
             feedbackLabel.setText("<html><center>Incorrect. Answer: " + question.answer + "</center></html>");
             feedbackLabel.setForeground(PINK);
@@ -563,6 +572,133 @@ public class QuizModule extends JPanel implements Quizable {
 
         timer.setRepeats(false);
         timer.start();
+    }
+
+    private void checkLiveBadgeUnlock() {
+        if (score >= 1 && !quizStarterShown) {
+            quizStarterShown = true;
+            showLiveBadgePopup("Quiz Starter", "You answered your first question correctly!");
+        } else if (score >= 5 && !brainBoosterShown) {
+            brainBoosterShown = true;
+            showLiveBadgePopup("Brain Booster", "You reached 5 correct answers!");
+        } else if (score >= 10 && !smartSproutShown) {
+            smartSproutShown = true;
+            showLiveBadgePopup("Smart Sprout", "You reached 10 correct answers!");
+        } else if (score >= 15 && !wellnessProShown) {
+            wellnessProShown = true;
+            showLiveBadgePopup("Wellness Pro", "You reached 15 correct answers!");
+        } else if (score >= 20 && !perfectMindShown) {
+            perfectMindShown = true;
+            showLiveBadgePopup("Perfect Mind", "Perfect score! Amazing work!");
+        }
+    }
+
+    private void showLiveBadgePopup(String badgeName, String message) {
+        final JDialog dialog = new JDialog(SwingUtilities.getWindowAncestor(this), "Quiz Reward", Dialog.ModalityType.APPLICATION_MODAL);
+        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        dialog.setResizable(false);
+
+        JPanel outer = new JPanel(new BorderLayout());
+        outer.setBackground(POPUP_BG);
+        outer.setBorder(new CompoundBorder(
+                new LineBorder(new Color(202, 176, 230), 2),
+                new EmptyBorder(14, 16, 14, 16)));
+
+        JPanel content = new JPanel();
+        content.setOpaque(false);
+        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+
+        JLabel title = new JLabel("Badge Unlocked!", SwingConstants.CENTER);
+        title.setFont(HealiverseTheme.buttonFont(16));
+        title.setForeground(DARK_TEXT);
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setPreferredSize(new Dimension(250, 24));
+        title.setMaximumSize(new Dimension(250, 24));
+
+        JLabel badgeImage = imageLabel(getLiveBadgeImage(badgeName), 150, 150);
+        badgeImage.setAlignmentX(Component.CENTER_ALIGNMENT);
+        badgeImage.setPreferredSize(new Dimension(160, 160));
+        badgeImage.setMinimumSize(new Dimension(160, 160));
+        badgeImage.setMaximumSize(new Dimension(160, 160));
+
+        JLabel badgeNameLabel = new JLabel("<html><center>" + badgeName + "</center></html>", SwingConstants.CENTER);
+        badgeNameLabel.setFont(HealiverseTheme.buttonFont(14));
+        badgeNameLabel.setForeground(PURPLE);
+        badgeNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        badgeNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        badgeNameLabel.setPreferredSize(new Dimension(250, 28));
+        badgeNameLabel.setMaximumSize(new Dimension(250, 28));
+
+        JLabel messageLabel = new JLabel("<html><center>" + message + "</center></html>", SwingConstants.CENTER);
+        messageLabel.setFont(HealiverseTheme.bodyFont(11));
+        messageLabel.setForeground(MUTED_TEXT);
+        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        messageLabel.setPreferredSize(new Dimension(250, 34));
+        messageLabel.setMaximumSize(new Dimension(250, 40));
+
+        JLabel footerLabel = new JLabel("<html><center>Check Rewards for points, stars, badges, and leaderboard.</center></html>", SwingConstants.CENTER);
+        footerLabel.setFont(HealiverseTheme.bodyFont(10));
+        footerLabel.setForeground(MUTED_TEXT);
+        footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        footerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        footerLabel.setPreferredSize(new Dimension(250, 42));
+        footerLabel.setMaximumSize(new Dimension(250, 48));
+
+        JButton okButton = new JButton("OK");
+        HealiverseTheme.stylePixelButton(okButton, PINK);
+        HealiverseTheme.setFixedSize(okButton, 180, HealiverseTheme.COMPACT_BUTTON_HEIGHT);
+        okButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        okButton.addActionListener(e -> dialog.dispose());
+
+        content.add(title);
+        content.add(Box.createVerticalStrut(8));
+        content.add(badgeImage);
+        content.add(Box.createVerticalStrut(8));
+        content.add(badgeNameLabel);
+        content.add(Box.createVerticalStrut(4));
+        content.add(messageLabel);
+        content.add(Box.createVerticalStrut(6));
+        content.add(footerLabel);
+        content.add(Box.createVerticalStrut(10));
+        content.add(okButton);
+
+        outer.add(content, BorderLayout.CENTER);
+
+        dialog.setContentPane(outer);
+        dialog.pack();
+        dialog.setSize(310, 390);
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }
+
+    private String getLiveBadgeImage(String badgeName) {
+        if ("Quiz Starter".equals(badgeName)) {
+            return "Quiz Starter Badge.png";
+        }
+        if ("Brain Booster".equals(badgeName)) {
+            return "Brain Booster Badge.png";
+        }
+        if ("Smart Sprout".equals(badgeName)) {
+            return "Smart Sprout Badge.png";
+        }
+        if ("Wellness Pro".equals(badgeName)) {
+            return "Wellness Pro Badge.png";
+        }
+        if ("Perfect Mind".equals(badgeName)) {
+            return "Perfect Mind Badge.png";
+        }
+
+        return "Quiz Starter Badge.png";
+    }
+
+    private void resetLiveBadges() {
+        quizStarterShown = false;
+        brainBoosterShown = false;
+        smartSproutShown = false;
+        wellnessProShown = false;
+        perfectMindShown = false;
     }
 
     private void showResult() {
@@ -603,6 +739,7 @@ public class QuizModule extends JPanel implements Quizable {
     public void startQuiz() {
         currentIndex = 0;
         score = 0;
+        resetLiveBadges();
         loadQuestion();
         cardLayout.show(mainPanel, "QUIZ");
     }
@@ -643,6 +780,7 @@ public class QuizModule extends JPanel implements Quizable {
     public void resetQuiz() {
         currentIndex = 0;
         score = 0;
+        resetLiveBadges();
         loadQuestion();
         cardLayout.show(mainPanel, "QUIZ");
     }
