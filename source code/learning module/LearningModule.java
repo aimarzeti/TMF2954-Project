@@ -80,7 +80,7 @@ public class LearningModule extends JPanel implements Displayable, Navigable {
             header.setBackground(accentColour);
             header.setPreferredSize(new Dimension(panel.getWidth(), 60));
             JLabel titleLabel = new JLabel("  " + pageTitle);
-            titleLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+            titleLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
             titleLabel.setForeground(Color.WHITE); 
             titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 12, 0, 0));
             header.add(titleLabel, BorderLayout.CENTER);
@@ -89,34 +89,45 @@ public class LearningModule extends JPanel implements Displayable, Navigable {
             JPanel centre = new JPanel();
             centre.setLayout(new BoxLayout(centre, BoxLayout.Y_AXIS));
             centre.setBackground(Color.WHITE); 
-            centre.setBorder(BorderFactory.createEmptyBorder(16, 20, 16, 20));
+            centre.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
             if (imagePath != null && !imagePath.isEmpty()) {
                 try {
                     ImageIcon icon = new ImageIcon(getClass().getResource("/" + imagePath));
-                    Image scaled = icon.getImage().getScaledInstance(300, 180, Image.SCALE_SMOOTH);
+                    
+                    Image scaled = icon.getImage().getScaledInstance(
+                        450,
+                        250,
+                        Image.SCALE_SMOOTH
+                    );
+                    
                     JLabel imageLabel = new JLabel(new ImageIcon(scaled));
                     imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-                    imageLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 14, 0));
+                    imageLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
                     centre.add(imageLabel);
+                    
                 } catch (Exception e) {
+                    System.out.println("Image not found: " + imagePath);
                     // Image not found - log and continue without image 
                 }
             }
 
             JTextArea textArea = new JTextArea(bodyText);
-            textArea.setFont(new Font("SansSerif", Font.PLAIN, 14));
+            textArea.setFont(new Font("SansSerif", Font.PLAIN, 16));
             textArea.setLineWrap(true);
             textArea.setWrapStyleWord(true);
             textArea.setEditable(false);
             textArea.setBackground(Color.WHITE); 
-            textArea.setBorder(null);
+            textArea.setBorder(
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
+            );
             textArea.setAlignmentX(Component.LEFT_ALIGNMENT);
+            
             centre.add(textArea);
 
             JScrollPane scroll = new JScrollPane(centre);
             scroll.setBorder(null);
-            scroll.getVerticalScrollBar().setValue(0);
+            scroll.getVerticalScrollBar().setUnitIncrement(16);
             panel.add(scroll, BorderLayout.CENTER); 
 
             panel.revalidate();
@@ -187,220 +198,143 @@ public class LearningModule extends JPanel implements Displayable, Navigable {
 
         pages.add(new LearningPage(
             "What is Mental Health?",
-            "Mental health includes our emotional, psychological, and social well-being." + 
-            "It affects how we think, feel, and act in everyday life.\n\n" +
-            "According to the World Health Organization (WHO), mental health is a state of" +
-            "well-being in which an individual realise their own potential, can cope with the" +
-            "normal stresses of life, can work productively, and is able to make a contribution." +
-            "to their community.\n\n" +
+            "Mental health affects how we think, feel, and act.\n\n" + 
             "Key Facts:\n" +
-            "- 1 in 4 people worlwide will experience a mental health condition at some point.\n" +
-            "- Mental health problems account for 16% of the global burden of disease.\n" +
-            "- Mental health is NOT just the absense of mental illness.\n\n" +
-            "Common myths:\n" +
-            "Myth: Mental illness is a sign of weakness.\n" +
-            "Fact: Mental health conditions are medical issues, not character flaws.",
+            "• Everyone has mental health.\n" +
+            "• It affects emotions and behaviour.\n" +
+            "• Mental health can change over time.\n" +
+            "• Seeking help is normal.\n\n" +
+            "Mental health is just as important as physical health.",
             "images/mental_health_intro.png",
-            "Introduction to mental health: definition, WHO stats, and myth-busting.",
+            "Introduction to mental health.",
             PAGE_COLOURS[0]
         ));
 
         pages.add(new LearningPage(
             "The Mental Health Spectrum",
-            "Mental health exists on a spectrum — it is not simply 'healthy' or 'ill'.\n\n" +
-            "The spectrum ranges from:\n\n" +
+            "Mental health exists on a spectrum.\n\n" +
             "THRIVING\n" +
-            "Feeling good, functioning well, resilient, positive outlook.\n\n" +
+            "Feeling positive and coping well.\n\n" +
             "STRUGGLING\n" +
-            "Feeling stressed, anxious, or low. Functioning, but with difficulty.\n\n" +
+            "• Feeling stressed or overwhelmed.\n\n" +
             "IN CRISIS\n" +
-            "Unable to function. Needs immediate professional support.\n\n" +
-            "Why this matters:\n" +
-            "Everyone moves along this spectrum throughout their life. Recognising where you " +
-            "are helps you take action early, before reaching a crisis point.\n\n" +
-            "Check-in question: Where on this spectrum are you right now?",
+            "• Difficulty functioning normally.\n\n" +
+            "People can move between these stages throughout life.",
             "images/spectrum.png",
-            "The mental health spectrum from thriving to crisis.",
+            "The mental health spectrum.",
             PAGE_COLOURS[1]
         ));
 
         pages.add(new LearningPage(
             "Common Mental Health Conditions",
-            "Here are three of the most common mental health conditions:\n\n" +
-            "ANXIETY DISORDERS\n" +
-            "Excessive worry, fear, or nervousness that interferes with daily life.\n" +
-            "Types: Generalised Anxiety, Social Anxiety, Panic Disorder\n\n" +
-            "DEPRESSION\n" +
-            "Persistent low mood, loss of interest, fatigue, and feelings of hopelessness.\n" +
-            "Affects over 280 million people globally (WHO, 2023).\n\n" +
-            "STRESS\n" +
-            "The body's response to pressure. Short-term stress can be useful, but chronic " +
-            "stress damages physical and mental health.\n\n" +
-            "Important note:\n" +
-            "These conditions are treatable. With the right support, most people recover " +
-            "and lead fulfilling lives. Early help = better outcomes.",
+            "Some common mental health conditions include:\n\n" +
+            "• ANXIETY - excessive worry or fear.\n" +
+            "• DEPRESSION - persistent sadness and low mood.\n" +
+            "• STRESS - the body's response to pressure.\n\n" +
+            "These conditions are treatable with the right support.", 
             "images/conditions.png",
-            "Overview of anxiety, depression, and stress.",
+            "Common mental health conditions.",
             PAGE_COLOURS[2]
         ));
 
         pages.add(new LearningPage(
             "Warning Signs to Watch For",
-            "Recognising early warning signs in yourself or others can prevent a crisis.\n\n" +
             "8 Warning Signs:\n\n" +
-            "1. Withdrawal — avoiding friends, family, and activities you used to enjoy\n\n" +
-            "2. Mood changes — unusual irritability, sadness, or mood swings\n\n" +
-            "3. Sleep problems — sleeping too much or too little, insomnia\n\n" +
-            "4. Appetite changes — eating significantly more or less than usual\n\n" +
-            "5. Difficulty concentrating — trouble focusing at work or school\n\n" +
-            "6. Feelings of worthlessness — negative self-talk, excessive guilt\n\n" +
-            "7. Physical complaints — unexplained headaches, stomach aches\n\n" +
-            "8. Loss of motivation — not caring about things that mattered before\n\n" +
-            "If you notice these in someone, check in with them kindly.",
+            "1. Withdrawal from friends and families\n" +
+            "2. Mood changes\n" +
+            "3. Sleep problems\n" +
+            "4. Appetite changes\n" +
+            "5. Difficulty concentrating\n" +
+            "6. Feelings of worthlessness\n" +
+            "7. Physical complaints\n" +
+            "8. Loss of motivation\n" +
+            "Recognising signs early is important.",
             "images/warning_signs.png",
-            "8 early warning signs of mental health struggles.",
+            "Warning signs of mental health struggles.",
             PAGE_COLOURS[3]
         ));
 
         pages.add(new LearningPage(
             "The Brain and Mental Health",
-            "Understanding the biology of mental health helps reduce stigma.\n\n" +
-            "Key neurotransmitters involved:\n\n" +
-            "SEROTONIN\n" +
-            "Regulates mood, sleep, and appetite. Low serotonin is linked to depression.\n\n" +
-            "DOPAMINE\n" +
-            "The 'reward' chemical. Drives motivation and pleasure. Imbalance linked " +
-            "to addiction and mood disorders.\n\n" +
-            "CORTISOL\n" +
-            "The stress hormone. Released during threat. Chronically high cortisol " +
-            "damages memory, immune function, and mood.\n\n" +
-            "GABA\n" +
-            "The brain's 'calm down' signal. Low GABA is linked to anxiety.\n\n" +
-            "Why medication works:\n" +
-            "Antidepressants like SSRIs work by increasing serotonin availability in the brain. " +
-            "Mental illness has a biological basis — it is not 'all in your head'.",
+            "The brain uses chemicals that affect emotions.\n\n" +
+            "• SEROTONIN - mood and sleep\n" +
+            "• DOPAMINE - motivation and reward\n" +
+            "• CORTISOL - stress response\n" +
+            "• GABA (Gamma-Aminobutyric Acid) - helps calm the brain\n\n" +
+            "Mental health conditions can have biological causes.",
             "images/brain.png",
-            "Neurotransmitters: serotonin, dopamine, cortisol, and GABA.",
+            "Brain chemicals and mental health.",
             PAGE_COLOURS[4]
         ));
 
         pages.add(new LearningPage(
             "Mental Health in Malaysia",
-            "Malaysia has a growing mental health awareness movement, but stigma remains.\n\n" +
-            "Statistics:\n" +
-            "- 1 in 3 Malaysians experience a mental health issue (NHMS 2019)\n" +
-            "- Only 1 in 10 Malaysians with mental illness receive treatment\n" +
-            "- Depression and anxiety are the most common conditions reported\n" +
-            "- University students are among the most affected groups\n\n" +
-            "Barriers to seeking help in Malaysia:\n" +
-            "- Social stigma (malu / shame)\n" +
-            "- Fear of being seen as 'crazy'\n" +
-            "- Lack of awareness about available services\n" +
-            "- Cultural belief that mental issues should be handled privately\n" +
-            "- Financial cost of therapy\n\n" +
-            "The good news:\n" +
-            "Public awareness is increasing. More universities now offer free counselling. " +
-            "Telehealth services make it easier to access support discreetly.",
+            "Mental health awareness is growing in Malaysia.\n\n" +
+            "Challenges include:\n" +
+            "• Social stigma\n" +
+            "• Lack of awareness\n" +
+            "• Fear of seeking help\n" +
+            "• Cost of treatment\n\n" +
+            "Many universities now provide counselling services.",
             "images/malaysia.png",
-            "Mental health statistics and challenges specific to Malaysia.",
+            "Mental health in Malaysia.",
             PAGE_COLOURS[5]
         ));
 
         pages.add(new LearningPage(
             "Healthy Coping Strategies",
-            "Coping strategies are the tools we use to manage stress and maintain mental health.\n\n" +
-            "Evidence-based strategies:\n\n" +
-            "SLEEP (7-9 hours)\n" +
-            "Sleep deprivation worsens anxiety, depression, and concentration. " +
-            "Consistent sleep schedule is key.\n\n" +
-            "PHYSICAL EXERCISE\n" +
-            "30 minutes of moderate exercise, 5x/week, reduces depression symptoms " +
-            "as effectively as some medications.\n\n" +
-            "JOURNALING\n" +
-            "Writing thoughts and feelings reduces emotional intensity and improves " +
-            "self-understanding.\n\n" +
-            "SOCIAL SUPPORT\n" +
-            "Talking to trusted friends or family is protective against mental illness.\n\n" +
-            "DIGITAL DETOX\n" +
-            "Excessive social media use is linked to anxiety and low self-esteem.\n\n" +
-            "CREATIVE ACTIVITIES\n" +
-            "Art, music, cooking, or any hobby engages the reward system positively.",
+            "Healthy ways to manage stress include:\n\n" +
+            "• Getting  enough sleep\n" +
+            "• Regular exercise\n" +
+            "• Journaling\n" +
+            "• Talking to trusted people\n" +
+            "• Limiting screen time\n" +
+            "• Enjoying hobbies\n\n" +
+            "Small healthy habits can make a big difference.",
             "images/coping.png",
-            "Six evidence-based coping strategies for mental wellness.",
+            "Healthy coping strategies.",
             PAGE_COLOURS[6]
         ));
 
         pages.add(new LearningPage(
             "Mindfulness and Breathing",
-            "Mindfulness is the practice of paying attention to the present moment — " +
-            "non-judgmentally. It reduces anxiety and improves emotional regulation.\n\n" +
-            "Try this now: The 4-7-8 Breathing Technique\n\n" +
-            "Step 1: Breathe IN through your nose for 4 seconds\n" +
+            "Mindfulness helpes you focus on the present moment.\n\n" +
+            "4-7-8 Breathing Technique:\n\n" +
+            "Step 1: INHALE 4 seconds\n" +
             "Step 2: HOLD your breath for 7 seconds\n" +
-            "Step 3: Breathe OUT through your mouth for 8 seconds\n" +
+            "Step 3: EXHALE for 8 seconds\n" +
             "Step 4: Repeat 3-4 times\n\n" +
-            "This activates your parasympathetic nervous system, calming the " +
-            "fight-or-flight response.\n\n" +
-            "The 5-4-3-2-1 Grounding Technique\n" +
-            "When feeling overwhelmed, name:\n" +
-            "5 things you can SEE\n" +
-            "4 things you can TOUCH\n" +
-            "3 things you can HEAR\n" +
-            "2 things you can SMELL\n" +
-            "1 thing you can TASTE\n\n" +
-            "This anchors you to the present and interrupts anxiety spirals.",
+            "This technique helps your body relax." +
             "images/mindfulness.png",
-            "4-7-8 breathing and 5-4-3-2-1 grounding techniques.",
+            "Mindfulness technique.",
             PAGE_COLOURS[7]
         ));
 
         pages.add(new LearningPage(
             "When to Seek Professional Help",
-            "It is okay to ask for help. Seeking support is a sign of strength, not weakness.\n\n" +
-            "Seek help if:\n" +
-            "- Symptoms have lasted more than 2 weeks\n" +
-            "- You are unable to function at school, work, or home\n" +
-            "- You are using substances to cope\n" +
-            "- You are having thoughts of harming yourself or others\n\n" +
-            "Types of professional support:\n\n" +
-            "COUNSELLOR\n" +
-            "Talk therapy, suitable for stress, life transitions, mild-moderate issues.\n\n" +
-            "PSYCHOLOGIST\n" +
-            "Provides therapy (CBT, DBT) for moderate-severe conditions.\n\n" +
-            "PSYCHIATRIST\n" +
-            "Medical doctor who can diagnose and prescribe medication.\n\n" +
-            "How to start:\n" +
-            "1. Talk to a trusted person about how you feel\n" +
-            "2. Visit your university health centre or GP\n" +
-            "3. Ask for a referral to a mental health professional",
+            "Consider seeking help if.\n\n" +
+            "• Symptoms last more than 2 weeks\n" +
+            "• Daily activities become difficult\n" +
+            "• You feel overwhelmed regularly\n" +
+            "• You have thoughts of harming yourself\n\n" +
+            "Professional support is available and effective.",
             "images/seek_help.png",
-            "When and how to seek professional mental health support.",
+            "Seeking professional help.",
             PAGE_COLOURS[8]
         ));
 
         pages.add(new LearningPage(
             "Resources and Support",
-            "You are not alone. Help is available.\n\n" +
-            "Crisis Helplines (Malaysia):\n\n" +
-            "BEFRIENDERS KUALA LUMPUR\n" +
-            "Tel: 03-7627 2929  (24 hours)\n" +
-            "For emotional support and crisis intervention\n\n" +
-            "MIASA (Mental Illness Awareness & Support Association)\n" +
-            "Tel: 03-2780 6803\n" +
-            "Support for those affected by mental illness\n\n" +
-            "TALIAN KASIH 15999\n" +
-            "Government welfare hotline (24 hours)\n\n" +
-            "MHPSS (Ministry of Health Psychological First Aid)\n" +
-            "Tel: 03-2935 9935\n\n" +
-            "Online resources:\n" +
-            "- MindaKita: www.mindakita.my\n" +
-            "- WHO Mental Health: www.who.int/mental_health\n\n" +
-            "On campus:\n" +
-            "Visit your university's counselling centre.\n" +
-            "Most universities offer FREE, confidential counselling services.\n\n" +
-            "You made it through this module! Take the quiz to test your knowledge.",
+            "Help is available.\n\n" +
+            "Malaysia Resources:\n\n" +
+            "• BEFRIENDERS KUALA LUMPUR\n" +
+            "• MIASA (Mental Illness Awareness & Support Association)\n" +
+            "• TALIAN KASIH 15999\n" +
+            "• University Counselling Services.\n" +
+            "Congratulations on completing this learning module!.\n" +
+            "Proceed to the quiz to test your knowledge."
             "images/resources.png",
-            "Malaysian mental health helplines, online resources, and campus support.",
+            "Support resources.",
             PAGE_COLOURS[9]
         ));
 
@@ -411,7 +345,7 @@ public class LearningModule extends JPanel implements Displayable, Navigable {
     private void buildUI() {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
-        setPreferredSize(new Dimension(400, 700));
+        setPreferredSize(new Dimension(900, 700));
 
         // Top progress bar
         JPanel topBar = new JPanel(new BorderLayout(8, 0));
@@ -713,7 +647,7 @@ public class LearningModule extends JPanel implements Displayable, Navigable {
             JFrame frame = new JFrame("Mental Health Learning Module - SDG 3: Good Health and Well-being"); // Fix #12: was broken string with - outside quotes
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.add(new LearningModule("testuser")); // pass real username from Dashboard
-            frame.pack();
+            frame.setSize(1000, 700);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
