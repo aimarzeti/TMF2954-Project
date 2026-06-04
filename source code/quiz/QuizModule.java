@@ -34,11 +34,11 @@ public class QuizModule extends JPanel implements Quizable {
     //Constants
 
     private static final String SCORES_FILE = "scores.txt";
-    private static final Color TEAL         = new Color(123, 198, 126);
-    private static final Color LIGHT_GREY   = new Color(200, 230, 255);
-    private static final Color DARK_TEXT    = new Color(80, 50, 100);
-    private static final Color RED          = new Color(232, 99, 122);
-    private static final Color WHITE        = Color.WHITE;
+    private static final Color TEAL         = new Color(174, 220, 166);
+    private static final Color LIGHT_GREY   = new Color(181, 224, 250);
+    private static final Color DARK_TEXT    = new Color(58, 39, 86);
+    private static final Color RED          = new Color(246, 133, 178);
+    private static final Color WHITE        = new Color(255, 249, 242);
 
     //Inner class: Question==============================================================
     //Represents a single quiz question.
@@ -243,11 +243,11 @@ public class QuizModule extends JPanel implements Quizable {
 
         // ── Top bar ──
         JPanel topBar = new JPanel(new BorderLayout(8, 4));
-        topBar.setBackground(LIGHT_GREY);
+        topBar.setBackground(new Color(235, 213, 250));
         topBar.setBorder(new EmptyBorder(10, 14, 10, 14));
 
         questionNumberLabel = new JLabel("Question 1 of " + questions.size());
-        questionNumberLabel.setFont(new Font("SansSerif", Font.BOLD, 13));
+        questionNumberLabel.setFont(new Font("Monospaced", Font.BOLD, 13));
         questionNumberLabel.setForeground(DARK_TEXT);
 
         questionProgress = new JProgressBar(0, questions.size());
@@ -269,18 +269,18 @@ public class QuizModule extends JPanel implements Quizable {
 
         // Question type badge
         questionTypeLabel = new JLabel("TRUE / FALSE");
-        questionTypeLabel.setFont(new Font("SansSerif", Font.BOLD, 11));
+        questionTypeLabel.setFont(new Font("Monospaced", Font.BOLD, 11));
         questionTypeLabel.setForeground(WHITE);
         questionTypeLabel.setOpaque(true);
         questionTypeLabel.setBackground(TEAL);
-        questionTypeLabel.setBorder(new EmptyBorder(4, 10, 4, 10));
+        questionTypeLabel.setBorder(new CompoundBorder(new LineBorder(new Color(143, 104, 204), new EmptyBorder(4, 10, 4, 10)));
         questionTypeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         content.add(questionTypeLabel);
         content.add(Box.createVerticalStrut(14));
 
         // Question text
         questionTextLabel = new JLabel("<html><body style='width:280px'></body></html>");
-        questionTextLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        questionTextLabel.setFont(new Font("Monospaced", Font.PLAIN, 15));
         questionTextLabel.setForeground(DARK_TEXT);
         questionTextLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         content.add(questionTextLabel);
@@ -301,7 +301,7 @@ public class QuizModule extends JPanel implements Quizable {
 
         // Fill in the blank field
         fitbField = new JTextField();
-        fitbField.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        fitbField.setFont(new Font("Monospaced", Font.PLAIN, 15));
         fitbField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 44));
         fitbField.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true),
@@ -310,7 +310,7 @@ public class QuizModule extends JPanel implements Quizable {
         fitbField.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         hintLabel = new JLabel("");
-        hintLabel.setFont(new Font("SansSerif", Font.ITALIC, 12));
+        hintLabel.setFont(new Font("Monospaced", Font.ITALIC, 12));
         hintLabel.setForeground(new Color(150, 150, 150));
         hintLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -319,7 +319,7 @@ public class QuizModule extends JPanel implements Quizable {
 
         // Feedback label
         feedbackLabel = new JLabel(" ");
-        feedbackLabel.setFont(new Font("SansSerif", Font.BOLD, 13));
+        feedbackLabel.setFont(new Font("Monospaced", Font.BOLD, 13));
         feedbackLabel.setForeground(TEAL);
         feedbackLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         content.add(feedbackLabel);
@@ -332,9 +332,9 @@ public class QuizModule extends JPanel implements Quizable {
         navBar.setBorder(new EmptyBorder(10, 16, 16, 16));
 
         nextButton = new JButton("Next >");
-        nextButton.setFont(new Font("SansSerif", Font.BOLD, 14));
-        nextButton.setBackground(TEAL);
-        nextButton.setForeground(WHITE);
+        nextButton.setFont(new Font("Monospaced", Font.BOLD, 14));
+        nextButton.setBackground(new Color(174, 220, 166));
+        nextButton.setForeground(new Color(58, 39, 86));
         nextButton.setFocusPainted(false);
         nextButton.setBorderPainted(false);
         nextButton.setPreferredSize(new Dimension(Integer.MAX_VALUE, 44));
@@ -348,7 +348,7 @@ public class QuizModule extends JPanel implements Quizable {
 
     private JButton buildAnswerButton(String text, Color bg) {
         JButton btn = new JButton(text);
-        btn.setFont(new Font("SansSerif", Font.BOLD, 14));
+        btn.setFont(new Font("Monospaced", Font.BOLD, 14));
         btn.setBackground(bg);
         btn.setForeground(WHITE);
         btn.setFocusPainted(false);
@@ -369,7 +369,7 @@ public class QuizModule extends JPanel implements Quizable {
         header.setBackground(TEAL);
         header.setPreferredSize(new Dimension(390, 60));
         JLabel title = new JLabel("  Quiz Complete!", SwingConstants.LEFT);
-        title.setFont(new Font("SansSerif", Font.BOLD, 18));
+        title.setFont(new Font("Monospaced", Font.BOLD, 18));
         title.setForeground(WHITE);
         title.setBorder(new EmptyBorder(0, 16, 0, 0));
         header.add(title, BorderLayout.CENTER);
@@ -382,27 +382,27 @@ public class QuizModule extends JPanel implements Quizable {
         content.setBorder(new EmptyBorder(30, 24, 24, 24));
 
         scoreLabel = new JLabel("", SwingConstants.CENTER);
-        scoreLabel.setFont(new Font("SansSerif", Font.BOLD, 48));
+        scoreLabel.setFont(new Font("Monospaced", Font.BOLD, 48));
         scoreLabel.setForeground(TEAL);
         scoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         percentageLabel = new JLabel("", SwingConstants.CENTER);
-        percentageLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
+        percentageLabel.setFont(new Font("Monospaced", Font.BOLD, 22));
         percentageLabel.setForeground(DARK_TEXT);
         percentageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         messageLabel = new JLabel("", SwingConstants.CENTER);
-        messageLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        messageLabel.setFont(new Font("Monospaced", Font.BOLD, 18));
         messageLabel.setForeground(TEAL);
         messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         detailLabel = new JLabel("", SwingConstants.CENTER);
-        detailLabel.setFont(new Font("SansSerif", Font.PLAIN, 13));
+        detailLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
         detailLabel.setForeground(new Color(120, 120, 120));
         detailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         retryButton = new JButton("Try Again");
-        retryButton.setFont(new Font("SansSerif", Font.BOLD, 14));
+        retryButton.setFont(new Font("Monospaced", Font.BOLD, 14));
         retryButton.setBackground(TEAL);
         retryButton.setForeground(WHITE);
         retryButton.setFocusPainted(false);
@@ -412,7 +412,7 @@ public class QuizModule extends JPanel implements Quizable {
         retryButton.addActionListener(e -> resetQuiz());
 
         menuButton = new JButton("Back to Menu");
-        menuButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        menuButton.setFont(new Font("Monospaced", Font.PLAIN, 14));
         menuButton.setBackground(LIGHT_GREY);
         menuButton.setForeground(DARK_TEXT);
         menuButton.setFocusPainted(false);
