@@ -265,7 +265,7 @@ public class QuizModule extends JPanel implements Quizable {
         JPanel content = new JPanel();
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         content.setBackground(WHITE);
-        content.setBorder(new EmptyBorder(20, 20, 10, 20));
+        content.setBorder(new EmptyBorder(20, 30, 10, 30));
 
         // Question type badge
         questionTypeLabel = new JLabel("TRUE / FALSE");
@@ -279,7 +279,7 @@ public class QuizModule extends JPanel implements Quizable {
         content.add(Box.createVerticalStrut(14));
 
         // Question text
-        questionTextLabel = new JLabel("<html><body style='width:320px'></body></html>");
+        questionTextLabel = new JLabel("<html><body style='width:300px'></body></html>");
         questionTextLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
         questionTextLabel.setForeground(DARK_TEXT);
         questionTextLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -456,7 +456,7 @@ public class QuizModule extends JPanel implements Quizable {
         questionProgress.setValue(currentIndex + 1);
 
         // Update question text
-        questionTextLabel.setText("<html><body style='width:320px'>" + q.questionText + "</body></html>");
+        questionTextLabel.setText("<html><body style='width:300px'>" + q.questionText + "</body></html>");
 
         // Update answer area
         answerPanel.removeAll();
