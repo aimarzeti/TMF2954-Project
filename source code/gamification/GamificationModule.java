@@ -12,14 +12,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Class: GamificationModule
- * Creator: Zeti Nur Aimar binti Ali
- * Tester: G04/SE Group 14
- * Description: Cozy pixel-art gamification screen for SDG 3 Mental Health.
- * Reads quiz scores and learning progress from text files, then displays
- * points, stars, badges, a calm timer, progress tracker, and leaderboard.
- */
+// Class: GamificationModule
+// Creator: Zeti Nur Aimar binti Ali
+// Tester: G04/SE Group 14
+// Description: Cozy pixel-art gamification screen for SDG 3 Mental Health.
+// Reads quiz scores and learning progress from text files, then displays
+// points, stars, badges, a calm timer, progress tracker, and leaderboard.
 public class GamificationModule extends JPanel implements Reward, LeaderboardProvider {
 
     private static final String SCORES_FILE = "scores.txt";
@@ -239,7 +237,7 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         stats.add(Box.createVerticalStrut(4));
         stats.add(exp);
         stats.add(Box.createVerticalStrut(3));
-        stats.add(imageLabel("progress_star.png", 132, 18));
+        stats.add(createRewardHint());
 
         JPanel top = new JPanel(new BorderLayout(8, 0));
         top.setOpaque(false);
@@ -266,6 +264,13 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         row.setFont(new Font("Monospaced", Font.BOLD, 10));
         row.setBorder(new CompoundBorder(new LineBorder(INK, 1), new EmptyBorder(4, 2, 4, 2)));
         return row;
+    }
+
+    private JLabel createRewardHint() {
+        JLabel hint = new JLabel("Next reward: learn + quiz", SwingConstants.LEFT);
+        hint.setFont(new Font("Monospaced", Font.BOLD, 9));
+        hint.setForeground(new Color(116, 84, 142));
+        return hint;
     }
 
     private JPanel createCollectiblesPanel() {
@@ -296,6 +301,9 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
         tile.setPreferredSize(new Dimension(58, 44));
 
         JLabel icon = imageLabel(asset, 24, 24);
+        if (icon.getIcon() == null) {
+            icon = new JLabel(new CollectibleIcon(label));
+        }
         icon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel text = new JLabel(label);
@@ -917,6 +925,58 @@ public class GamificationModule extends JPanel implements Reward, LeaderboardPro
             int textY = y + 26;
             g.drawString(mark, textX, textY);
             g.dispose();
+        }
+    }
+
+    private static class CollectibleIcon implements Icon {
+        private final String label;
+
+        CollectibleIcon(String label) {
+            this.label = label;
+        }
+
+        @Override
+        public int getIconWidth() {
+            return 24;
+        }
+
+        @Override
+        public int getIconHeight() {
+            return 24;
+        }
+
+        @Override
+        public void paintIcon(Component c, Graphics graphics, int x, int y) {
+            Graphics2D g = (Graphics2D) graphics.create();
+            g.setColor(new Color(126, 83, 153));
+            g.fillRect(x + 4, y + 2, 16, 20);
+            g.fillRect(x + 2, y + 4, 20, 16);
+            g.setColor(colorForLabel());
+            g.fillRect(x + 6, y + 5, 12, 14);
+            g.fillRect(x + 5, y + 7, 14, 10);
+            g.setColor(INK);
+            g.setFont(new Font("Monospaced", Font.BOLD, 9));
+            String mark = label.substring(0, 1);
+            FontMetrics metrics = g.getFontMetrics();
+            int textX = x + (24 - metrics.stringWidth(mark)) / 2;
+            g.drawString(mark, textX, y + 15);
+            g.dispose();
+        }
+
+        private Color colorForLabel() {
+            if (label.contains("STAR") || label.contains("MOOD") || label.contains("REST")) {
+                return BUTTER;
+            }
+            if (label.contains("COIN") || label.contains("GOLD")) {
+                return new Color(255, 202, 91);
+            }
+            if (label.contains("GEM")) {
+                return MINT;
+            }
+            if (label.contains("FOCUS") || label.contains("MIND")) {
+                return BLUE;
+            }
+            return SOFT_PINK;
         }
     }
 }
