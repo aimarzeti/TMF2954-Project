@@ -273,7 +273,10 @@ public class QuizModule extends JPanel implements Quizable {
         questionTypeLabel.setForeground(WHITE);
         questionTypeLabel.setOpaque(true);
         questionTypeLabel.setBackground(TEAL);
-        questionTypeLabel.setBorder(new CompoundBorder(new LineBorder(new Color(143, 104, 204), new EmptyBorder(4, 10, 4, 10)));
+        questionTypeLabel.setBorder(new CompoundBorder(
+            new LineBorder(new Color(143, 104, 204), 2),
+            new EmptyBorder(4, 10, 4, 10)
+            ));
         questionTypeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         content.add(questionTypeLabel);
         content.add(Box.createVerticalStrut(14));
